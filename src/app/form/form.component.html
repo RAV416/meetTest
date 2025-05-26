@@ -1,0 +1,89 @@
+<div class="container mt-5" style="max-width: 500px">
+  <h2 class="mb-4 text-center">User Form</h2>
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        name="name"
+        [(ngModel)]="model.name"
+        #name="ngModel"
+        required
+        placeholder="Enter your name"
+      />
+      @if (name.invalid && name.touched) {
+      <div class="text-danger">Name is required.</div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="surname" class="form-label">Surname</label>
+      <input
+        id="surname"
+        type="text"
+        class="form-control"
+        name="surname"
+        [(ngModel)]="model.surname"
+        #surname="ngModel"
+        required
+        placeholder="Enter your surname"
+      />
+      @if (surname.invalid && surname.touched) {
+      <div class="text-danger">Surname is required.</div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        id="email"
+        type="email"
+        class="form-control"
+        name="email"
+        [(ngModel)]="model.email"
+        #email="ngModel"
+        required
+        placeholder="Enter your email"
+      />
+      @if (email.invalid && email.touched) {
+      <div class="text-danger">Valid email is required.</div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image URL</label>
+      <input
+        id="image"
+        type="text"
+        class="form-control"
+        name="image"
+        [(ngModel)]="model.image"
+        placeholder="Paste image URL (optional)"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="role" class="form-label">Role</label>
+      <select
+        id="role"
+        class="form-select"
+        name="role"
+        [(ngModel)]="model.role"
+        #role="ngModel"
+        required
+      >
+
+        <option [ngValue]="'student'">Student</option>
+        <option [ngValue]="'teacher'">Teacher</option>
+      </select>
+      @if (role.invalid && role.touched) {
+      <div class="text-danger">Role is required.</div>
+      }
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="form.invalid"
+    >
+      Submit
+    </button>
+  </form>
+
