@@ -1,36 +1,9 @@
-  <div
-    class="d-flex flex-row align-items-center mb-2 justify-content-center gap-2"
-  >
-    <button class="btn btn-outline-primary btn-sm" (click)="prevMonth()">
-      &lt;
-    </button>
-    <span class="fw-bold text-center mx-2"> {{ monthName }} {{ year }} </span>
-    <button class="btn btn-outline-primary btn-sm" (click)="nextMonth()">
-      &gt;
-    </button>
-    <button class="btn btn-outline-secondary btn-sm ms-3" (click)="goToToday()">
-      Today
-    </button>
-  </div>
+<mat-card>
+  <mat-calendar [(selected)]="selectedDate"></mat-calendar>
+</mat-card>
 
-  <div class="d-flex flex-column align-items-center w-100">
-    <table class="table table-bordered w-auto">
-      <thead>
-        <tr>
-          @for (day of days; track day){
-          <th>{{ day }}</th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (week of weeks; track week){
-        <tr>
-          @for (date of week; track date){
-          <td [class.table-primary]="isToday(date)"
-            style="cursor:pointer">{{ date }}</td>
-          }
-        </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+@if (selectedDate) {
+<div>
+  <p>You selected: {{ selectedDate | date }}</p>
+</div>
+}
