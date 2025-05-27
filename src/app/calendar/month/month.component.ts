@@ -17,7 +17,7 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatCardModule,
   ],
-  styles: [`.demo-inline-calendar-card {width: 300px;}`,],
+  styleUrls: ['./month.component.scss'],
   standalone: true,
 })
 export class MonthComponent {

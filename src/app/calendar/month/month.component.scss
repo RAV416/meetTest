@@ -1,0 +1,11 @@
+      .demo-inline-calendar-card {
+        width: 50%;
+      }
+
+      ::ng-deep .mat-calendar-body-label {
+        color: transparent !important;
+        font-size: 0 !important;
+      }
+      ::ng-deep .cdk-visually-hidden {
+        display: none;
+      }

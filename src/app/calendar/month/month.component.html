@@ -1,16 +1,11 @@
-<mat-card class="demo-inline-calendar-card">
-  <mat-calendar [(selected)]="selectedDate"></mat-calendar>
-</mat-card>
+<div class="d-flex flex-column align-items-center">
+  <mat-card class="demo-inline-calendar-card">
+    <mat-calendar [(selected)]="selectedDate"></mat-calendar>
+  </mat-card>
 
-
-@if (selectedDate()) {
-<div>
-  <p>You selected: {{ selectedDate() | date }}</p>
+  @if (selectedDate()) {
+  <div>
+    <p>You selected: {{ selectedDate() | date }}</p>
+  </div>
+  }
 </div>
-}
-
-<style>
-::ng-deep .cdk-visually-hidden {
-  display: none;
-}
-</style>
