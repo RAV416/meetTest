@@ -1,4 +1,4 @@
-      .demo-inline-calendar-card {
+.demo-inline-calendar-card {
         width: 50%;
       }
 
@@ -9,3 +9,9 @@
       ::ng-deep .cdk-visually-hidden {
         display: none;
       }
+
+::ng-deep .mat-calendar-body-cell.selected-date .mat-calendar-body-cell-content {
+  background: #43a047 !important;
+  color: #612222 !important;
+  border-radius: 50%;
+}

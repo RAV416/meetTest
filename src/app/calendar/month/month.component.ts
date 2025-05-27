@@ -21,5 +21,21 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
 })
 export class MonthComponent {
-  selectedDate = model<Date | null>(null);
+  selectedDates = model<Date[]>([]);
+
+  onDateSelected(date: Date | null): void {
+    const current = this.selectedDates();
+    const index = current.findIndex(
+      (d) => date && d.toDateString() === date.toDateString()
+    );
+    if (index > -1) {
+      const updated = [...current];
+      updated.splice(index, 1);
+      this.selectedDates.set(updated);
+    } else {
+      if (date) {
+        this.selectedDates.set([...current, date]);
+      }
+    }
+  }
 }
