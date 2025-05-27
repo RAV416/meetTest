@@ -1,9 +1,16 @@
-<mat-card>
+<mat-card class="demo-inline-calendar-card">
   <mat-calendar [(selected)]="selectedDate"></mat-calendar>
 </mat-card>
 
-@if (selectedDate) {
+
+@if (selectedDate()) {
 <div>
-  <p>You selected: {{ selectedDate | date }}</p>
+  <p>You selected: {{ selectedDate() | date }}</p>
 </div>
 }
+
+<style>
+::ng-deep .cdk-visually-hidden {
+  display: none;
+}
+</style>

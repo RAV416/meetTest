@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,12 +15,11 @@ import { MatCardModule } from '@angular/material/card';
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
   ],
-  styles: [],
+  styles: [`.demo-inline-calendar-card {width: 300px;}`,],
   standalone: true,
 })
 export class MonthComponent {
-
-  selectedDate: Date | null = null;
+  selectedDate = model<Date | null>(null);
 }
