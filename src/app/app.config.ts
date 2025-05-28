@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-
+    
     importProvidersFrom([
       AngularFirestoreModule,
       AngularFireModule.initializeApp(environment.firebaseConfig),
