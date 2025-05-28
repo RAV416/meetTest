@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-month',
@@ -23,7 +24,7 @@ import { MatCardModule } from '@angular/material/card';
 export class MonthComponent {
   selectedDates = model<Date[]>([]);
 
-  onDateSelected(date: Date | null): void {
+  onDateSelected(date: Date): void {
     const current = this.selectedDates();
     const index = current.findIndex(
       (d) => date && d.toDateString() === date.toDateString()
@@ -37,5 +38,6 @@ export class MonthComponent {
         this.selectedDates.set([...current, date]);
       }
     }
+    
   }
 }
