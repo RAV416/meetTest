@@ -4,8 +4,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   template: `
     <div class="px-4 py-5 my-5 text-center">
-      <h1>Hello</h1>
-
+      <h1>error</h1>
     </div>
   `,
   standalone: true,

@@ -17,18 +17,14 @@ import { RouterModule } from '@angular/router';
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            @for (route of routerAdress; track route) {
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/home">Home</a>
+              <a class="nav-link active"
+                routerLink="{{ route[0] }}">
+                {{ route[1] }}
+              </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/calendar">Calendar</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/list">Users</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/form">Add User</a>
-            </li>
+            }
           </ul>
         </div>
       </div>
@@ -38,4 +34,10 @@ import { RouterModule } from '@angular/router';
   styles: [],
   standalone: true,
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  routerAdress = [
+    ['/calendar', 'Calendar'],
+    ['/user', 'Friends'],
+    ['/event', 'Events'],
+  ];
+}

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MonthComponent } from "./month/month.component";
-import { DayComponent } from "./day/day.component";
+import { MonthComponent } from './month/month.component';
+import { DayComponent } from './day/day.component';
 
 @Component({
   selector: 'app-calendar',
@@ -11,4 +11,5 @@ import { DayComponent } from "./day/day.component";
   standalone: true,
 })
 export class CalendarComponent {
+
 }

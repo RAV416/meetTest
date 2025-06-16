@@ -13,6 +13,7 @@ import {
   provideNativeDateAdapter,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     
     importProvidersFrom([
       AngularFirestoreModule,
+      AngularFireAuthModule,
       AngularFireModule.initializeApp(environment.firebaseConfig),
     ]),
     provideNativeDateAdapter(),

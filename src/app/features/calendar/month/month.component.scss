@@ -1,0 +1,32 @@
+:host {
+  .demo-inline-calendar-card {
+    width: 50%;
+  }
+  ::ng-deep .mat-calendar-body-label:nth-last-of-type(1) {
+    display: none;
+  }
+  ::ng-deep .mat-calendar-body-label {
+    visibility: hidden;
+  }
+  ::ng-deep .cdk-visually-hidden {
+    display: none;
+  }
+      ::ng-deep .mat-calendar-body-cell-content {
+    background: #979795 !important;
+    color: #612222 !important;
+    border-radius: 50%;
+  }
+
+  ::ng-deep .mat-calendar-body-today {
+    background: #ece912 !important;
+    color: #612222 !important;
+    border-radius: 50%;
+  }
+
+::ng-deep .mat-calendar-body-cell-content:hover {
+  background-color: green !important;
+  color: blue !important;
+  border-radius: 50%;
+}
+  
+}

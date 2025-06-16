@@ -1,0 +1,14 @@
+<div class="d-flex flex-column min-vh-100">
+  <app-navbar></app-navbar>
+  <div class="flex-grow-1" style="background-color: rgb(99, 99, 99);">
+    @if (user$ | async; as user) {
+  <p>Welcome, {{ user.email }}</p>
+    <router-outlet />
+    <div><button class="btn btn-secondary" (click)="logout()"
+>Logout</button></div>
+    } @else {
+    <app-form></app-form>
+}
+  </div>
+  <app-footer></app-footer>
+</div>

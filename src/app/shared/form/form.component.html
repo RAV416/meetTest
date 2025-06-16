@@ -1,0 +1,55 @@
+<div class="container mt-5" style="max-width: 500px">
+  <h2 class="mb-4 text-center">{{ mode | titlecase }}</h2>
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    @for (credential of credentials; track credential; let i = $index;) {
+    <div class="mb-3">
+      <label for="{{ credential }}" class="form-label">{{
+        credential | titlecase
+      }}</label>
+      <input
+        [id]="credential"
+        [type]="getInputType(credential)"
+        class="form-control"
+        [name]="credential"
+        [(ngModel)]="model[credential]"
+        #ngModelRef="ngModel"
+        [required]="isRequired(credential)"
+        [attr.minlength]="3"
+        [attr.maxlength]="100"
+        [placeholder]="
+          credential === 'image' ? 'Enter imageUrl' : 'Enter your ' + credential
+        "
+        [pattern]="getInputPattern(credential)"
+      />
+      @if (ngModelRef.invalid && ngModelRef.touched) {
+      <div class="text-danger">{{ credential | titlecase }} is required.</div>
+
+      }
+    </div>
+    }
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="form.invalid"
+    >
+      {{
+        mode === "log in"
+          ? "Log in"
+          : mode === "edit"
+          ? "Update"
+          : mode === "create"
+          ? "Create User"
+          : "Submit"
+      }}
+    </button>
+  </form>
+
+  @if (mode === 'log in') {
+  <button
+    type="createUser"
+    class="btn btn-primary w-100"
+    (click)="this.mode = 'create'"
+  >
+    Sign up</button
+  >}
+</div>
