@@ -17,7 +17,6 @@ import { UserService } from '../../features/user/user.service';
   standalone: true,
 })
 export class HomeComponent {
-  private userService: UserService = inject(UserService);
    private authService: AuthService = inject(AuthService);
 user$ = this.authService.user$
 
