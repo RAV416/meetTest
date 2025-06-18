@@ -1,5 +1,18 @@
 <h2 class="d-flex flex-column align-items-center">Calendar</h2>
-<div>
-  <app-month></app-month>
-  <app-day></app-day>
+<div style="max-width: 800px; margin: auto">
+  <p class="text-center">
+    This calendar is powered by
+    <a href="https://fullcalendar.io/" target="_blank"
+      ><button>FullCalendar</button></a
+    >.
+  </p>
+  <full-calendar [options]="calendarOptions"></full-calendar>
+  <div>
+    <p>Selected dates:</p>
+    <ul>
+      @for (selected of selectedDates(); track selected) {
+      <li>{{ selected.date | date }}</li>
+      }
+    </ul>
+  </div>
 </div>
