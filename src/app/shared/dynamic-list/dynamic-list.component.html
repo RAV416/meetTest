@@ -12,11 +12,18 @@
         alt="No image available"
       />
       <div class="card-body p-0">
-        <h5 class="card-title mb-1">{{ fieldMapper()(item).title1 }}</h5>
-        <p class="card-text mb-1">{{ fieldMapper()(item).description }}</p>
+        <h5 class="card-title mb-1">
+          {{ fieldMapper()(item).title1 }}
+        </h5>
+        <p class="card-text mb-1">
+          {{ fieldMapper()(item).description }}
+        </p>
         <small class="text-muted"
           >{{ fieldMapper()(item).additionalInfo }}
         </small>
+        <ng-container
+          *ngTemplateOutlet="miscTemplate(); context: { $implicit: item }"
+        ></ng-container>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
 import { RouterModule } from '@angular/router';
@@ -14,12 +14,18 @@ import {
   standalone: true,
 })
 export class EventComponent {
-  Service = EventService;
+  eventService: EventService = inject(EventService);
+  event = EventService;
+
+  deleteEvent(event: EventModel): void {
+    console.log('Deleting event:', event.id);
+    this.eventService.deleteOne(event.id);
+  }
 
   mapToFields = (model: EventModel): DynamicListFields => ({
     title1: `${model.title}`,
     description: `${model.description}`,
-    additionalInfo: `${model.location} - ${model.date} - ${model.time}`,
+    additionalInfo: `${model.location} - ${model.date}`,
     image: `${model.image}`,
   });
 }

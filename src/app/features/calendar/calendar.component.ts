@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MonthComponent } from './month/month.component';
 import { DayComponent } from './day/day.component';
@@ -11,5 +11,5 @@ import { DayComponent } from './day/day.component';
   standalone: true,
 })
 export class CalendarComponent {
-
+  selectedDateChange = input<Date[]>();
 }

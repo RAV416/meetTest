@@ -7,7 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideRouter } from '@angular/router';
 
 import { AngularFireModule } from '@angular/fire/compat';
-import { environment } from '../environments/environment';
+import { firebase } from '../environments/firebase';
 import { routes } from './app.routes';
 import {
   provideNativeDateAdapter,
@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([
       AngularFirestoreModule,
       AngularFireAuthModule,
-      AngularFireModule.initializeApp(environment.firebaseConfig),
+      AngularFireModule.initializeApp(firebase.firebaseConfig),
     ]),
     provideNativeDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'pl' }, 

@@ -1,0 +1,41 @@
+<div class="container mt-5" style="max-width: 500px">
+  <h2 class="mb-4 text-center">Event creator</h2>
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <app-calendar></app-calendar>
+
+    @for (event of events; track event; let i = $index;) {
+    <div class="mb-3">
+      <label for="{{ event }}" class="form-label">{{
+        event | titlecase
+      }}</label>
+      <input
+        [id]="event"
+        class="form-control"
+        [name]="event"
+        [(ngModel)]="model[event]"
+        #ngModelRef="ngModel"
+        [required]="isRequired(event)"
+        [attr.minlength]="3"
+        [attr.maxlength]="100"
+        [placeholder]="
+          event === 'image' ? 'Enter imageUrl' : 'Enter your ' + event
+        "
+      />
+      @if (ngModelRef.invalid && ngModelRef.touched) {
+      <div class="text-danger">{{ event | titlecase }} is required.</div>
+      }
+    </div>
+    }
+    <label class="form-label">Friends</label>
+    <button class="btn btn-secondary w-100 mb-3">
+      Add Friends
+    </button>
+    <button
+      type="Create event"
+      class="btn btn-primary w-100"
+      [disabled]="form.invalid"
+    >
+      Create Event
+    </button>
+  </form>
+</div>

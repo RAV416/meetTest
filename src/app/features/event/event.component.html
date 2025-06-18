@@ -1,10 +1,17 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center">Events List</h2>
-  <button class="btn btn-primary" routerLink="/form/create">
-    Create event
-  </button>
+  <button class="btn btn-primary" routerLink="/eventForm">Create event</button>
+  <ng-template #misc let-item>
+    <button class="btn btn-danger" (click)="deleteEvent(item)">
+      Remove Event
+    </button>
+  </ng-template>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <app-dynamic-list [serviceType]="Service" [fieldMapper]="mapToFields">
+    <app-dynamic-list
+      [serviceType]="event"
+      [fieldMapper]="mapToFields"
+      [miscTemplate]="misc"
+    >
     </app-dynamic-list>
   </div>
 </div>

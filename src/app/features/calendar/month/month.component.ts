@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, model } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  model,
+  output,
+  Output,
+} from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,8 +28,16 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
 })
 export class MonthComponent {
-  mode = 'create';
+  selectedDatesChange = output<Date[]>();
+
+  mode = 'view';
   selectedDates = model<Date[]>([]);
+
+  constructor() {
+    effect(() => {
+      this.selectedDatesChange.emit(this.selectedDates());
+    });
+  }
 
   isSelected(date: Date): boolean {
     return this.selectedDates().some(
@@ -44,7 +59,8 @@ export class MonthComponent {
     } else {
       if (date) {
         const updated = [...current, date];
-        this.selectedDates.set(updated.sort((a, b) => a.getTime() - b.getTime())
+        this.selectedDates.set(
+          updated.sort((a, b) => a.getTime() - b.getTime())
         );
       }
     }

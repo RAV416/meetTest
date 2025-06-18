@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { UserModel } from './user.model';
 import { UserService } from './user.service';
 import { RouterModule } from '@angular/router';
@@ -15,7 +15,13 @@ import {
   standalone: true,
 })
 export class UserComponent {
-  service = UserService;
+addFriend(model: UserModel) {
+throw new Error('Method not implemented.');
+}
+removeFriend(model: UserModel) {
+throw new Error('Method not implemented.');
+}
+  user = UserService;
 
   mapToFields = (model: UserModel): DynamicListFields => ({
     title1: `Name: ${model.name} ${model.surname}`,
@@ -23,4 +29,5 @@ export class UserComponent {
     additionalInfo: ``,
     image: `${model.image}`,
   });
+  
 }

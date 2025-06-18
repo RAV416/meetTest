@@ -5,6 +5,7 @@ import {
   inject,
   signal,
   effect,
+  TemplateRef,
 } from '@angular/core';
 import { Injector, Type } from '@angular/core';
 
@@ -15,9 +16,7 @@ export interface DynamicListFields {
   image?: string;
 }
 
-export interface ListDataService{
-
-}
+export interface ListDataService{}
 
 @Component({
   selector: 'app-dynamic-list',
@@ -28,10 +27,10 @@ export interface ListDataService{
 })
 export class DynamicListComponent<T> {
   private injector = inject(Injector);
+  readonly serviceType = input<Type<ListDataService>>();
   readonly fieldMapper = input<(item: T) => DynamicListFields>(() => ({}));
-
-  readonly serviceType = input<ListDataService>();
   readonly list = signal<T[] | null>(null);
+  readonly miscTemplate = input<TemplateRef<{ $implicit: T }> | null>(null);
 
   constructor() {
     effect(() => {
