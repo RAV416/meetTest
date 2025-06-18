@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   template: `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
       <div class="container">
         <a class="navbar-brand" href="#">SpotkaniaApp</a>
         <button
