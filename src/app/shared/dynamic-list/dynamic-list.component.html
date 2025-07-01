@@ -2,11 +2,11 @@
 <p>Loading...</p>
 } @else {
 <ul>
-  @for (item of list(); track item) {
+  @for (item of list() ; track item) {
   <div class="col">
     <div class="card h-100 shadow-sm d-flex flex-row align-items-center p-2">
       <img
-        [src]="fieldMapper()(item).image"
+        [src]="fieldMapper()(item).image "
         class="img-fluid rounded-circle me-3"
         style="width: 80px; height: 80px; object-fit: cover"
         alt="No image available"

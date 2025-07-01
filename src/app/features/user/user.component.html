@@ -1,20 +1,21 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center">Friends List</h2>
+  <button class="btn btn-primary" routerLink="/user">Add Friends</button>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <ng-template #misc let-item>
-      <button class="btn btn-success" (click)="addFriend(item.id)">
+      <button class="btn btn-success" (click)="addItem(item)">
         Add Friend
       </button>
-      <button class="btn btn-danger" (click)="removeFriend(item.id)">
+      <button class="btn btn-danger" (click)="deleteItem(item)">
         Remove Friend
       </button>
     </ng-template>
     <app-dynamic-list
-      [serviceType]="user"
+      [serviceType]="service"
       [fieldMapper]="mapToFields"
       [miscTemplate]="misc"
-      
     >
     </app-dynamic-list>
   </div>
+  
 </div>

@@ -1,0 +1,8 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Events List</h2>
+  <button class="btn btn-primary" routerLink="/eventForm">Create event</button>
+  <ng-template #misc let-item>
+    <button class="btn btn-danger" (click)="addItem()">Add</button>
+  </ng-template>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div>
+</div>

@@ -1,20 +1,26 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
-import { CalendarComponent } from '../calendar/calendar.component';
+import { CalendarComponent } from '../../shared/calendar/calendar.component';
+import { UserModel } from '../user/user.model';
+import { UserService } from '../user/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event-form',
 
-  imports: [CommonModule, CalendarComponent, FormsModule],
+  imports: [CommonModule, CalendarComponent, FormsModule, AsyncPipe],
   templateUrl: './event-form.component.html',
   standalone: true,
 })
 export class EventFormComponent {
-  mode = 'create';
+  mode: 'create' | 'edit' = 'create';
   private eventService: EventService = inject(EventService);
+  userService = inject(UserService);
+  users$: Observable<UserModel[]> = this.userService.getAll();
+
   get events(): (keyof EventModel)[] {
     return ['title', 'description', 'location', 'image'];
   }
@@ -22,7 +28,7 @@ export class EventFormComponent {
     id: '',
     title: '',
     description: '',
-    date: [''],
+    date: [],
     location: '',
     participants: [''],
     image: '',
@@ -45,5 +51,18 @@ export class EventFormComponent {
     } catch (error) {
       console.error('Error during form submit:', error);
     }
+  }
+  selectedUsers: UserModel[] = [];
+
+  toggleUser(user: UserModel, checked: boolean): void {
+    if (checked) {
+      this.selectedUsers.push(user);
+    } else {
+      this.selectedUsers = this.selectedUsers.filter((u) => u.id !== user.id);
+    }
+  }
+
+  isSelected(user: UserModel): boolean {
+    return this.selectedUsers.some((u) => u.id === user.id);
   }
 }

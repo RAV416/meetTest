@@ -1,17 +1,17 @@
 <h2 class="d-flex flex-column align-items-center">Calendar</h2>
-<div style="max-width: 800px; margin: auto">
+<div style="max-width: 80%; margin: auto">
   <p class="text-center">
     This calendar is powered by
     <a href="https://fullcalendar.io/" target="_blank"
       ><button>FullCalendar</button></a
     >.
   </p>
-  <full-calendar [options]="calendarOptions"></full-calendar>
+    <full-calendar [options]="calendarOptions"></full-calendar>
   <div>
     <p>Selected dates:</p>
     <ul>
-      @for (selected of selectedDates(); track selected) {
-      <li>{{ selected.date | date }}</li>
+      @for (selected of selectedDates; track selected) {
+      <li>{{ selected | date }}</li>
       }
     </ul>
   </div>

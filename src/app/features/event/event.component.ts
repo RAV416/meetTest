@@ -14,18 +14,20 @@ import {
   standalone: true,
 })
 export class EventComponent {
-  eventService: EventService = inject(EventService);
+  injector: EventService = inject(EventService);
   event = EventService;
 
-  deleteEvent(event: EventModel): void {
-    console.log('Deleting event:', event.id);
-    this.eventService.deleteOne(event.id);
+  deleteItem(model: EventModel): void {
+    console.log('Deleting event:', model.id);
+    this.injector.deleteOne(model.id);
   }
 
   mapToFields = (model: EventModel): DynamicListFields => ({
     title1: `${model.title}`,
     description: `${model.description}`,
-    additionalInfo: `${model.location} - ${model.date}`,
+    additionalInfo: `${'where: '+ model.location}
+      - ${'when: '+ model.date}
+      - ${'who: '+ model.participants}`,
     image: `${model.image}`,
   });
 }

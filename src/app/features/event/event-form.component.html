@@ -1,9 +1,16 @@
 <div class="container mt-5" style="max-width: 500px">
   <h2 class="mb-4 text-center">Event creator</h2>
   <form #form="ngForm" (ngSubmit)="onSubmit()">
-    <app-calendar></app-calendar>
+    <app-calendar
+      [id]="'date'"
+      class="form-control"
+      [name]="'date'"
+      [(ngModel)]="model.date"
+      #ngModelRef="ngModel"
+      [required]="isRequired('events')"
+    ></app-calendar>
 
-    @for (event of events; track event; let i = $index;) {
+    @for (event of events ; track event; let i = $index;) {
     <div class="mb-3">
       <label for="{{ event }}" class="form-label">{{
         event | titlecase
@@ -27,9 +34,24 @@
     </div>
     }
     <label class="form-label">Friends</label>
-    <button class="btn btn-secondary w-100 mb-3">
-      Add Friends
-    </button>
+    <ul>
+      @for (user of (users$ | async); track user){
+      <li>
+        <label>
+          <input
+            [id]="'participants'"
+            type="checkbox"
+            [value]="user.id"
+            (click)="toggleUser(user, !isSelected(user))"
+            [checked]="isSelected(user)"
+            [(ngModel)]="model.participants"
+            #ngModelRef="ngModel"
+          />
+          {{ user.email }}
+        </label>
+      </li>
+      }
+    </ul>
     <button
       type="Create event"
       class="btn btn-primary w-100"

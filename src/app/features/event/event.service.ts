@@ -5,7 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-  _client: AngularFirestore= inject(AngularFirestore);
+  _client: AngularFirestore = inject(AngularFirestore);
   private get eventCollection() {
     return this._client.collection<EventModel>('meets');
   }
