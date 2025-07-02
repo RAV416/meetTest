@@ -8,6 +8,7 @@
       [(ngModel)]="model.date"
       #ngModelRef="ngModel"
       [required]="isRequired('events')"
+      (dateSelected)="onDateSelected($event)"
     ></app-calendar>
 
     @for (event of events ; track event; let i = $index;) {
@@ -34,24 +35,39 @@
     </div>
     }
     <label class="form-label">Friends</label>
-    <ul>
-      @for (user of (users$ | async); track user){
-      <li>
-        <label>
-          <input
-            [id]="'participants'"
-            type="checkbox"
-            [value]="user.id"
-            (click)="toggleUser(user, !isSelected(user))"
-            [checked]="isSelected(user)"
-            [(ngModel)]="model.participants"
-            #ngModelRef="ngModel"
-          />
-          {{ user.email }}
-        </label>
-      </li>
-      }
-    </ul>
+    <button type="button" class="btn btn-outline-primary w-100 mb-2" (click)="showUserModal = true">
+  Select Friends
+</button>
+<div class="modal-backdrop fade show" *ngIf="showUserModal" style="z-index: 1040;"></div>
+<div class="modal d-block" tabindex="-1" *ngIf="showUserModal" style="z-index: 1050;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Friends</h5>
+        <button type="button" class="btn-close" (click)="showUserModal = false"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-unstyled">
+          @for (user of (users$ | async); track user) {
+            <li>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="isSelected(user)"
+                  (change)="toggleUser(user)"
+                />
+                {{ user.email }}
+              </label>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="showUserModal = false">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     <button
       type="Create event"
       class="btn btn-primary w-100"

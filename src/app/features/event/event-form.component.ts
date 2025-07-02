@@ -28,11 +28,23 @@ export class EventFormComponent {
     id: '',
     title: '',
     description: '',
-    date: [],
+    date: [''],
     location: '',
     participants: [''],
     image: '',
   };
+  onDateSelected(date: string) {
+    if (!Array.isArray(this.model.date)) {
+      this.model.date = [];
+    }
+    const index = this.model.date.indexOf(date);
+    if (index > -1) {
+      this.model.date.splice(index, 1);
+    } else {
+      this.model.date.push(date);
+    }
+    console.log('Selected dates:', this.model.date);
+  }
   isRequired(eventData: string): boolean {
     return ['title', 'description', 'location'].includes(eventData);
   }
@@ -54,15 +66,19 @@ export class EventFormComponent {
   }
   selectedUsers: UserModel[] = [];
 
-  toggleUser(user: UserModel, checked: boolean): void {
-    if (checked) {
-      this.selectedUsers.push(user);
-    } else {
-      this.selectedUsers = this.selectedUsers.filter((u) => u.id !== user.id);
-    }
+toggleUser(user: UserModel) {
+  let participants = Array.isArray(this.model.participants) ? [...this.model.participants] : [];
+  const idx = participants.indexOf(user.id);
+  if (idx > -1) {
+    participants.splice(idx, 1);
+  } else {
+    participants.push(user.name , user.surname);
   }
+  this.model = { ...this.model, participants };
+}
 
-  isSelected(user: UserModel): boolean {
-    return this.selectedUsers.some((u) => u.id === user.id);
-  }
+isSelected(user: UserModel): boolean {
+  return Array.isArray(this.model.participants) && this.model.participants.includes(user.id);
+}
+  showUserModal = false;
 }

@@ -8,10 +8,10 @@
   </p>
     <full-calendar [options]="calendarOptions"></full-calendar>
   <div>
-    <p>Selected dates:</p>
+    <p>Selected date:</p>
     <ul>
-      @for (selected of selectedDates; track selected) {
-      <li>{{ selected | date }}</li>
+      @for (selected of dateSelected |async; track i ;let i = $index) {
+      {{ selected  }}
       }
     </ul>
   </div>

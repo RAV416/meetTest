@@ -1,32 +1,32 @@
 @if (list() === null) {
-<p>Loading...</p>
+  <p>Loading...</p>
 } @else {
-<ul>
-  @for (item of list() ; track item) {
-  <div class="col">
-    <div class="card h-100 shadow-sm d-flex flex-row align-items-center p-2">
-      <img
-        [src]="fieldMapper()(item).image "
-        class="img-fluid rounded-circle me-3"
-        style="width: 80px; height: 80px; object-fit: cover"
-        alt="No image available"
-      />
-      <div class="card-body p-0">
-        <h5 class="card-title mb-1">
-          {{ fieldMapper()(item).title1 }}
-        </h5>
-        <p class="card-text mb-1">
-          {{ fieldMapper()(item).description }}
-        </p>
-        <small class="text-muted"
-          >{{ fieldMapper()(item).additionalInfo }}
-        </small>
-        <ng-container
-          *ngTemplateOutlet="miscTemplate(); context: { $implicit: item }"
-        ></ng-container>
+  <div class="row row-cols-1 row-cols-lg-2 g-4">
+    @for (item of list(); track $index) {
+      <div class="col">
+        <div class="card h-100 shadow-sm d-flex flex-row align-items-center p-2">
+          <img
+            [src]="fieldMapper()(item).image"
+            class="img-fluid rounded-circle me-3"
+            style="width: 80px; height: 80px; object-fit: cover"
+            alt="No image available"
+          />
+          <div class="card-body p-0">
+            <h5 class="card-title mb-1">
+              {{ fieldMapper()(item).title1 }}
+            </h5>
+            <p class="card-text mb-1">
+              {{ fieldMapper()(item).description }}
+            </p>
+            <small class="text-muted">
+              {{ fieldMapper()(item).additionalInfo }}
+            </small>
+            <ng-container
+              *ngTemplateOutlet="miscTemplate(); context: { $implicit: item }"
+            ></ng-container>
+          </div>
+        </div>
       </div>
-    </div>
+    }
   </div>
-  }
-</ul>
 }

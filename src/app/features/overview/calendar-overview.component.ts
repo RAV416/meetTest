@@ -15,4 +15,22 @@ import { CalendarComponent } from "../../shared/calendar/calendar.component";
   styleUrls: [],
   standalone: true,
 })
-export class EventsOverviewComponent {}
+export class EventsOverviewComponent {
+//   handleDateClick(arg: DateClickArg): void {
+//   const date = arg.date;
+//   const existingIndex = this.selectedDates.findIndex(
+//     (d) => d.toDateString() === date.toDateString()
+//   );
+//   if (existingIndex > -1) {
+//     this.selectedDates.splice(existingIndex, 1);
+//     arg.dayEl.style.backgroundColor = ''
+//   } else {
+//     this.selectedDates.push(date);
+//     arg.dayEl.style.backgroundColor = 'green'
+//   }
+//   this.selectedDates.sort((a, b) => a.getTime() - b.getTime());
+  
+  
+
+// }
+}
