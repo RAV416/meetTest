@@ -72,7 +72,7 @@ toggleUser(user: UserModel) {
   if (idx > -1) {
     participants.splice(idx, 1);
   } else {
-    participants.push(user.name , user.surname);
+    participants.push(user.name +' '+ user.surname,);
   }
   this.model = { ...this.model, participants };
 }

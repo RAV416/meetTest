@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { User } from 'firebase/auth';
+import { Auth, onAuthStateChanged, User } from 'firebase/auth';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -10,10 +10,18 @@ export class AuthService {
 
 user$: Observable<firebase.User | null> = this._auth.authState;
 
+  constructor(private auth: AngularFireAuth) {
+    this.user$ = auth.authState;
+    this.user$.subscribe(user => {
+      if (user) {
+        console.log('User auth logged in:', user.uid);
+      } else {
+        console.log('User auth logged out');
+      }
+    });
+  }
   login(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    console.log('User logged in:', email);
     return this._auth.signInWithEmailAndPassword(email, password);
-    
   }
 
   register(email: string, password: string): Promise<firebase.auth.UserCredential> {
@@ -24,7 +32,7 @@ user$: Observable<firebase.User | null> = this._auth.authState;
     return this._auth.signOut();
   }
 
-getCurrentUser(): Promise<firebase.User | null> {
-  return this._auth.currentUser;
-}
+  getCurrentUser(): Promise<firebase.User | null> {
+    return this._auth.currentUser;
+  }
 }
