@@ -20,7 +20,7 @@ export const routes: Routes = [
       { path: 'form/:mode', component: FormComponent },
       { path: 'eventForm', component: EventFormComponent },
       { path: 'event', component: EventComponent },
-      { path: 'event', component: EventComponent },
+      { path: 'event:id', component: EventDetailComponent },
       { path: '**', component: NotFoundComponent },
     ],
   },
