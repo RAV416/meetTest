@@ -7,6 +7,7 @@ import { EventComponent } from './features/event/event.component';
 import { UserComponent } from './features/user/user.component';
 import { EventFormComponent } from './features/event/event-form.component';
 import { EventsOverviewComponent } from './features/overview/calendar-overview.component';
+import { EventDetailComponent } from './features/event/event-detail.component';
 
 export const routes: Routes = [
   {
