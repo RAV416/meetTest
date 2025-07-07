@@ -1,8 +1,54 @@
 <div class="container mt-4">
-  <h2 class="mb-4 text-center">Events List</h2>
-  <button class="btn btn-primary" routerLink="/eventForm">Create event</button>
-  <ng-template #misc let-item>
-    <button class="btn btn-danger" (click)="addItem()">Add</button>
-  </ng-template>
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div>
+  @if (event$ | async; as event){
+
+  <div class="card h-100 align-items-center p-2" style="width: 100%">
+    <img
+      [src]="event.image"
+      class="img-fluid rounded-circle me-3"
+      style="width: 80px; height: 80px; object-fit: cover"
+      alt="No image available"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{ event.title }}</h5>
+      <p class="card-text">{{ event.description }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Date:</strong> {{ event.date }}</li>
+      <li class="list-group-item"><strong>Location: </strong>{{ event.location }}</li>
+      <li class="list-group-item"><strong>Participants: </strong>{{ event.participants }}</li>
+    </ul>
+    <div class="card-body">
+        <button class="btn btn-danger" (click)="showDeleteModal = true">
+          Remove Event
+        </button>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+  @if(showDeleteModal){
+    <div
+      class="modal d-block"
+      tabindex="-1"
+
+      style="z-index: 1050"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger">Warning</h5>
+            <button type="button" class="btn-close" (click)="showDeleteModal = false"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to remove this event? This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="showDeleteModal = false">Cancel</button>
+            <button type="button" class="btn btn-danger" (click)="deleteItem(event)">Remove Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  }@else{
+  <p>Loading event details...</p>
+  }
 </div>

@@ -7,6 +7,8 @@ import {
   effect,
   TemplateRef,
   output,
+  EventEmitter,
+  Output,
 } from '@angular/core';
 import { Injector, Type } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
@@ -28,6 +30,7 @@ export interface ListDataService<T = any> {
   selector: 'app-dynamic-list',
   standalone: true,
   imports: [CommonModule],
+  styles: [`.clickable-card {cursor: pointer;}`,],
   templateUrl: `./dynamic-list.component.html`,
 })
 export class DynamicListComponent<T> {
@@ -37,8 +40,8 @@ export class DynamicListComponent<T> {
   readonly fieldMapper = input<(item: T) => DynamicListFields>(() => ({}));
   readonly miscTemplate = input<TemplateRef<{ $implicit: T }> | null>(null);
   readonly list = signal<T[] | null>(null);
+  @Output() cardClicked = new EventEmitter<any>();
 
- 
   constructor() {
     effect(() => {
       const service = this.injector.get(this.serviceType());

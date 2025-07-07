@@ -12,6 +12,9 @@ export class EventService {
   getAll(): Observable<EventModel[]> {
     return this.eventCollection.valueChanges();
   }
+getOne(id: string): Observable<EventModel | undefined> {
+  return this.eventCollection.doc(id).valueChanges({ idField: 'id' });
+}
 
   addOne(event: EventModel) {
     const id = this._client.createId();

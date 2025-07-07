@@ -4,7 +4,7 @@
   <div class="row row-cols-1 row-cols-lg-2 g-4">
     @for (item of list(); track $index) {
       <div class="col">
-        <div class="card h-100 shadow-sm d-flex flex-row align-items-center p-2">
+        <div class="card clickable-card h-100 shadow-sm d-flex flex-row align-items-center p-2" (click)="cardClicked.emit(item)">
           <img
             [src]="fieldMapper()(item).image"
             class="img-fluid rounded-circle me-3"

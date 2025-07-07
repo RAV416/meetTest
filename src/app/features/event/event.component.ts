@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   DynamicListComponent,
   DynamicListFields,
@@ -15,12 +15,8 @@ import {
 })
 export class EventComponent {
   injector: EventService = inject(EventService);
+  router = inject(Router);
   event = EventService;
-
-  deleteItem(model: EventModel): void {
-    console.log('Deleting event:', model.id);
-    this.injector.deleteOne(model.id);
-  }
 
   mapToFields = (model: EventModel): DynamicListFields => ({
     title1: `${model.title}`,
@@ -30,4 +26,7 @@ export class EventComponent {
       - ${'who: '+ model.participants}`,
     image: `${model.image}`,
   });
+  goToEvent(item: EventModel): void {
+  this.router.navigate(['/event', item.id]);
+}
 }
