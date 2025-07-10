@@ -8,11 +8,12 @@ import { UserComponent } from './features/user/user.component';
 import { EventFormComponent } from './features/event/event-form.component';
 import { EventsOverviewComponent } from './features/overview/calendar-overview.component';
 import { EventDetailComponent } from './features/event/event-detail.component';
+import { AuthGuard } from './guard/authGuard.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: HomeComponent,  
     children: [
       { path: '', redirectTo: 'calendar', pathMatch: 'full' },
       { path: 'calendar', component: EventsOverviewComponent },
@@ -22,6 +23,6 @@ export const routes: Routes = [
       { path: 'event', component: EventComponent },
       { path: 'event/:id', component: EventDetailComponent },
       { path: '**', component: NotFoundComponent },
-    ],
+    ], canActivate: [AuthGuard],
   },
 ];

@@ -23,9 +23,6 @@ export class UserComponent {
   readonly itemAdded   = output<string>();
   readonly itemUpdated = output<{ id: string; changes: Partial<string> }>();
 
-  addItem(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
   deleteItem(model: UserModel): void {
     this.injector.deleteOne(model.id);
     console.log('Deleting user:', model.id);

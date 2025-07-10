@@ -3,9 +3,6 @@
   <button class="btn btn-primary" routerLink="/user">Add Friends</button>
 
     <ng-template #misc let-item>
-      <button class="btn btn-success" routerLink="/user:id" (click)="addItem(item)">
-        Add Friend
-      </button>
       <button class="btn btn-danger" (click)="deleteItem(item)">
         Remove Friend
       </button>

@@ -11,26 +11,26 @@
       (dateSelected)="onDateSelected($event)"
     ></app-calendar>
 
-    @for (event of events ; track event; let i = $index;) {
+    @for (input of formInputs ; track i; let i = $index;) {
     <div class="mb-3">
-      <label for="{{ event }}" class="form-label">{{
-        event | titlecase
+      <label for="{{ input }}" class="form-label">{{
+        input | titlecase
       }}</label>
       <input
-        [id]="event"
+        [id]="input"
         class="form-control"
-        [name]="event"
-        [(ngModel)]="model[event]"
+        [name]="input"
+        [(ngModel)]="model[input]"
         #ngModelRef="ngModel"
-        [required]="isRequired(event)"
+        [required]="isRequired(input)"
         [attr.minlength]="3"
-        [attr.maxlength]="event === 'description' ? 500 : 50"
+        [attr.maxlength]="input === 'description' ? 500 : 50"
         [placeholder]="
-          event === 'image' ? 'Enter imageUrl' : 'Enter your ' + event
+          input === 'image' ? 'Enter imageUrl' : 'Enter your ' + input
         "
       />
       @if (ngModelRef.invalid && ngModelRef.touched) {
-      <div class="text-danger">{{ event | titlecase }} is required.</div>
+      <div class="text-danger">{{ input | titlecase }} is required.</div>
       }
     </div>
     }
@@ -42,15 +42,14 @@
     >
       Select Friends
     </button>
+    @if (showUserModal){
     <div
       class="modal-backdrop fade show"
-      *ngIf="showUserModal"
       style="z-index: 1040"
     ></div>
     <div
       class="modal d-block"
       tabindex="-1"
-      *ngIf="showUserModal"
       style="z-index: 1050"
     >
       <div class="modal-dialog">
@@ -91,8 +90,10 @@
         </div>
       </div>
     </div>
+    }
     <button
       type="Create event"
+      
       class="btn btn-primary w-100"
       [disabled]="form.invalid"
     >

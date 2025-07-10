@@ -1,3 +1,8 @@
-:host ::ng-deep a {
+::ng-deep a {
   text-decoration: none;
+}
+::ng-deep .fc-daygrid-day.dateSelected {
+  background: #4caf50 !important; /* Green */
+  color: #972626 !important;
+  border-radius: 50%;
 }

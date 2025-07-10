@@ -27,6 +27,11 @@ export class CalendarComponent {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin , timeGridPlugin, interactionPlugin],
     dateClick: (arg) => this.handleDateClick(arg),
+    dayCellClassNames: (arg) => {
+      const isSelected = this.selectedDates.includes(arg['dateStr']);
+      if (isSelected) console.log('Selected:', arg['dateStr']);
+      return isSelected ? ['selected-date'] : [];
+    },
     selectable: true,
       headerToolbar: {
         left: 'prev,next today',
@@ -36,21 +41,21 @@ export class CalendarComponent {
   };
 
   @Output() dateSelected = new EventEmitter<string>();
+  selectedDates: string[] = [];
+ 
 
-  handleDateClick(arg: DateClickArg) {
-      this.dateSelected.emit(arg.dateStr);
+  // handleDateClick(arg: DateClickArg) {
+  //     this.dateSelected.emit(arg.dateStr);
+  // }
+handleDateClick(arg: DateClickArg) {
+  const idx = this.selectedDates.indexOf(arg.dateStr);
+  if (idx > -1) {
+    this.selectedDates.splice(idx, 1);
+  } else {
+    this.selectedDates.push(arg.dateStr);
   }
+  this.dateSelected.emit(arg.dateStr);
 
-  value: string = '';
-  onChange = (value: string) => {};
-  onTouched = () => {};
-  writeValue(value: string): void {
-    this.value = value;
-  }
-  registerOnChange(fn: (value: string) => void): void {
-    this.onChange = fn;
-  }
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
+  this.calendarOptions = { ...this.calendarOptions };
+}
 }
