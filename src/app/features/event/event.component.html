@@ -2,7 +2,7 @@
   <h2 class="mb-4 text-center">Events List</h2>
   <button class="btn btn-primary" routerLink="/eventForm">Create event</button>
 <ng-template #misc let-event>
-  {{ event.participants | participantIdToName : ((users$ | async) || []) }}
+  {{ event.participants | participantEmailToName : ((users$ | async) || []) }}
 </ng-template>
     <app-dynamic-list
       [serviceType]="event"

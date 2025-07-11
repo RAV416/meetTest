@@ -12,13 +12,14 @@ export class EventService {
   getAll(): Observable<EventModel[]> {
     return this.eventCollection.valueChanges();
   }
-  getOne(id: string): Observable<EventModel | undefined> {
-    return this.eventCollection.doc(id).valueChanges({ idField: 'id' });
-  }
+getOne(id: string): Observable<EventModel | undefined> {
+  return this.eventCollection.doc(id).valueChanges();
+}
 
   addOne(event: EventModel) {
     const id = this._client.createId();
     return this.eventCollection.doc(id).set({ ...event, id });
+    
   }
 
   updateOne(id: string, event: Partial<EventModel>): Promise<void> {

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, forwardRef, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -11,7 +10,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  imports: [CommonModule, RouterOutlet, FullCalendarModule, ],
+  imports: [CommonModule, FullCalendarModule, ],
   styleUrls: ['./calendar.component.scss'],
   standalone: true,
     providers: [

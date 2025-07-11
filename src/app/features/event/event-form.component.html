@@ -1,13 +1,8 @@
 <div class="container mt-5" style="max-width: 500px">
-  <h2 class="mb-4 text-center">Event creator</h2>
+  <h2 class="mb-4 text-center">Event {{ mode | titlecase }}</h2>
   <form #form="ngForm" (ngSubmit)="onSubmit()">
     <app-calendar
-      [id]="'date'"
       class="form-control"
-      [name]="'date'"
-      [(ngModel)]="model.date"
-      #ngModelRef="ngModel"
-      [required]="isRequired('events')"
       (dateSelected)="onDateSelected($event)"
     ></app-calendar>
 
@@ -43,15 +38,8 @@
       Select Friends
     </button>
     @if (showUserModal){
-    <div
-      class="modal-backdrop fade show"
-      style="z-index: 1040"
-    ></div>
-    <div
-      class="modal d-block"
-      tabindex="-1"
-      style="z-index: 1050"
-    >
+    <div class="modal-backdrop fade show" style="z-index: 1040"></div>
+    <div class="modal d-block" tabindex="-1" style="z-index: 1050">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,8 +51,15 @@
             ></button>
           </div>
           <div class="modal-body">
+            <input
+              type="text"
+              class="form-control mb-3"
+              placeholder="Search by email..."
+              [value]="searchTerm()"
+              (input)="onSearchInput($event)"
+            />
             <ul class="list-unstyled">
-              @for (user of (users$ | async); track user) {
+              @for (user of filteredUsers(); track user.email) {
               <li>
                 <label>
                   <input
@@ -73,6 +68,9 @@
                     (change)="toggleUser(user)"
                   />
                   {{ user.email }}
+                  {{
+                    user.email | participantEmailToName : (users$ | async) ?? []
+                  }}
                 </label>
               </li>
               }
@@ -93,11 +91,10 @@
     }
     <button
       type="Create event"
-      
       class="btn btn-primary w-100"
       [disabled]="form.invalid"
     >
-      Create Event
+      {{ mode | titlecase }} Event
     </button>
   </form>
 </div>

@@ -8,14 +8,14 @@ import {
 } from '../../shared/dynamic-list/dynamic-list.component';
 import { AuthService } from '../user/auth.service';
 import { map, from, switchMap } from 'rxjs';
-import { ParticipantIdToNamePipe } from '../../shared/custom pipes/participants.pipe';
+import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
 import { AsyncPipe } from '@angular/common';
 import { UserService } from '../user/user.service';
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styles: [],
-  imports: [ParticipantIdToNamePipe, AsyncPipe, RouterModule, DynamicListComponent],
+  imports: [ParticipantEmailToNamePipe, AsyncPipe, RouterModule, DynamicListComponent],
   standalone: true,
 })
 export class EventComponent {

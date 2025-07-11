@@ -17,14 +17,14 @@ import {
 })
 export class UserComponent {
   mode: 'users' | 'friends' = 'users';
-  private injector = inject(UserService);
+  private userService = inject(UserService);
   service = UserService;
   readonly itemDeleted = output<string>();
   readonly itemAdded   = output<string>();
   readonly itemUpdated = output<{ id: string; changes: Partial<string> }>();
 
   deleteItem(model: UserModel): void {
-    this.injector.deleteOne(model.id);
+    this.userService.deleteOne(model.id);
     console.log('Deleting user:', model.id);
   }
 

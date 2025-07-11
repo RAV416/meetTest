@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private _auth = inject(AngularFireAuth);
 
-user$: Observable<firebase.User | null> = this._auth.authState;
+  user$: Observable<firebase.User | null> = this._auth.authState;
 
   constructor(private auth: AngularFireAuth) {
     this.user$ = auth.authState;

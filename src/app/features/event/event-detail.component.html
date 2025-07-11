@@ -1,54 +1,88 @@
 <div class="container mt-4">
   @if (event$ | async; as event){
-    <div class="card h-100 align-items-center p-2" style="width: 100%">
-      <img
-        [src]="event.image"
-        class="img-fluid rounded-circle me-3"
-        style="width: 80px; height: 80px; object-fit: cover"
-        alt="No image available"
-      />
-      <app-calendar></app-calendar>
-      <div class="card-body">
-        <h5 class="card-title">{{ event.title }}</h5>
-        <p class="card-text">{{ event.description }}</p>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Date:</strong> {{ event.date }}</li>
-        <li class="list-group-item"><strong>Location: </strong>{{ event.location }}</li>
-        <li class="list-group-item"><strong>Participants: </strong>{{ event.participants | participantIdToName : (users$ | async) ?? [] }}</li>
-      </ul>
-      <div class="card-body">
-          <button class="btn btn-danger" (click)="showDeleteModal = true">
+  <div class="card h-100 align-items-center p-2" style="width: 100%">
+    <img
+      [src]="event.image"
+      class="img-fluid rounded-circle me-3"
+      style="width: 80px; height: 80px; object-fit: cover"
+      alt="No image available"
+    />
+    @if(showCalendar){
+    <app-calendar></app-calendar>
+  }
+    <button
+      class="btn btn-primary mb-2"
+      (click)="showCalendar = !showCalendar">Show Calendar</button>
+
+    <div class="card-body">
+      <h5 class="card-title">{{ event.title }}</h5>
+      <p class="card-text">{{ event.description }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Date:</strong> {{ event.date }}</li>
+      <li class="list-group-item">
+        <strong>Location: </strong>{{ event.location }}
+      </li>
+      <li class="list-group-item">
+        <strong>Participants: </strong
+        >{{
+          event.participants | participantEmailToName : (users$ | async) ?? []
+        }}
+      </li>
+    </ul>
+    <div class="card-body">
+      <button class="btn btn-danger" (click)="showDeleteModal = true">
+        Remove Event
+      </button>
+      <button
+        class="btn btn-secondary"
+        routerLink="/eventForm"
+
+        [queryParams]="{ mode: 'edit', id: eventId }"
+      >
+        Edit Event
+      </button>
+    </div>
+  </div>
+  @if(showDeleteModal){
+  <div class="modal d-block" tabindex="-1" style="z-index: 1050">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">Warning</h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="showDeleteModal = false"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to remove this event? This action cannot be
+            undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showDeleteModal = false"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            routerLink="/event"
+            (click)="deleteItem(event)"
+          >
             Remove Event
           </button>
-        <a href="#" class="card-link">Another link</a>
-      </div>
-    </div>
-    @if(showDeleteModal){
-      <div
-        class="modal d-block"
-        tabindex="-1"
-
-        style="z-index: 1050"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-danger">Warning</h5>
-              <button type="button" class="btn-close" (click)="showDeleteModal = false"></button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to remove this event? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"  (click)="showDeleteModal = false">Cancel</button>
-              <button type="button" class="btn btn-danger" routerLink="/event" (click)="deleteItem(event)">Remove Event</button>
-            </div>
-          </div>
         </div>
       </div>
-    }
-  }@else{
+    </div>
+  </div>
+  } }@else{
   <p>Loading event details...</p>
   }
 </div>

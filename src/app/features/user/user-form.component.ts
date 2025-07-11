@@ -16,7 +16,8 @@ import { AuthService } from './auth.service';
 export class FormComponent {
   private userService: UserService = inject(UserService);
   private authService: AuthService = inject(AuthService);
-
+  route: ActivatedRoute = inject(ActivatedRoute);
+  
   mode: 'log in' | 'edit' | 'create' = 'log in';
   get credentials(): (keyof UserModel)[] {
     if (this.mode === 'create' || this.mode === 'edit')
@@ -33,7 +34,7 @@ export class FormComponent {
     image: '',
   };
 
-  constructor(private route: ActivatedRoute) {}
+
   ngOnInit(): void {
     this.route.url.subscribe((urlSegments) => {
       const path = urlSegments.map((segment) => segment.path).join('/');

@@ -1,4 +1,4 @@
-import { Component, inject, NgModule, signal } from '@angular/core';
+import { Component, computed, inject, Input, NgModule, signal, WritableSignal } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EventService } from './event.service';
@@ -7,41 +7,59 @@ import { CalendarComponent } from '../../shared/calendar/calendar.component';
 import { UserModel } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
-
+import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-event-form',
 
-  imports: [  CommonModule, CalendarComponent, FormsModule, AsyncPipe],
+  imports: [
+    CommonModule,
+    CalendarComponent,
+    FormsModule,
+    AsyncPipe,
+    ParticipantEmailToNamePipe,
+  ],
   templateUrl: './event-form.component.html',
   standalone: true,
 })
 export class EventFormComponent {
-  
   private eventService: EventService = inject(EventService);
   private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
   users$: Observable<UserModel[]> = this.userService.getAll();
-  
+eventModel: WritableSignal<EventModel | undefined> = signal(undefined);
   mode: 'create' | 'edit' = 'create';
+  eventId?: string;
+   @Input() set id(eventId: string) {
+    
+  }
   selectedUsers: UserModel[] = [];
   showUserModal = false;
-
-
+  constructor() {
+    this.route.queryParamMap.subscribe((params) => {
+      const modeParam = params.get('mode');
+      this.eventId = params.get('id') ?? undefined;
+      if (modeParam === 'edit') {
+        this.mode = 'edit';
+      }
+    });
+  }
   model: EventModel = {
     id: '',
     title: '',
     description: '',
-    date: [''],
+    date: [],
     location: '',
-    participants: [''],
+    participants: [],
     image: '',
   };
-    get formInputs(): (keyof EventModel)[] {
+  get formInputs(): (keyof EventModel)[] {
     return ['title', 'description', 'location', 'image'];
   }
   onDateSelected(date: string) {
-    if (!Array.isArray(this.model.date)) {
-      this.model.date = [];
-    }
+    console.log('EventFormComponent initialized with mode:', this.mode);
+    console.log('EventFormComponent eventId:', this.eventId);
     const index = this.model.date.indexOf(date);
     if (index > -1) {
       this.model.date.splice(index, 1);
@@ -55,7 +73,6 @@ export class EventFormComponent {
   }
   onSubmit() {
     const event: EventModel = this.model;
-
     try {
       if (this.mode === 'create') {
         const newEvent: EventModel = { ...event, id: event.id };
@@ -70,23 +87,37 @@ export class EventFormComponent {
     }
   }
 
-  toggleUser(user: UserModel) {
-    let participants = Array.isArray(this.model.participants) ? [...this.model.participants] : [];
-    const idx = participants.indexOf(user.id);
+  toggleUser(user: UserModel): void {
+    let participants = Array.isArray(this.model.participants)
+      ? [...this.model.participants]
+      : [];
+    const idx = participants.indexOf(user.email);
     if (idx > -1) {
       participants.splice(idx, 1);
     } else {
-      participants.push(user.id);
+      participants.push(user.email);
     }
     this.model = { ...this.model, participants };
-    // if (!this.model.participants.includes(currentUserId)) {
-    // this.model.participants.push(currentUserId);
-    // }
   }
 
   isSelected(user: UserModel): boolean {
-    return Array.isArray(this.model.participants) && this.model.participants.includes(user.id);
+    return this.model.participants.includes(user.email);
   }
+  users = toSignal(this.users$, { initialValue: [] });
 
+  searchTerm = signal('');
 
+  filteredUsers = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    return this.users().filter(
+      (user) =>
+        user.email.toLowerCase().includes(term) ||
+        user.name?.toLowerCase().includes(term) ||
+        user.surname?.toLowerCase().includes(term)
+    );
+  });
+  onSearchInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.set(input.value);
+  }
 }
