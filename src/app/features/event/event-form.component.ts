@@ -9,7 +9,7 @@ import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs';
 import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-event-form',
 
@@ -24,27 +24,43 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
 })
 export class EventFormComponent {
+
   private eventService: EventService = inject(EventService);
   private userService = inject(UserService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  
   users$: Observable<UserModel[]> = this.userService.getAll();
-eventModel: WritableSignal<EventModel | undefined> = signal(undefined);
+  eventModel: WritableSignal<EventModel | undefined> = signal(undefined);
   mode: 'create' | 'edit' = 'create';
-  eventId?: string;
-   @Input() set id(eventId: string) {
-    
-  }
+
   selectedUsers: UserModel[] = [];
   showUserModal = false;
-  constructor() {
-    this.route.queryParamMap.subscribe((params) => {
-      const modeParam = params.get('mode');
-      this.eventId = params.get('id') ?? undefined;
-      if (modeParam === 'edit') {
-        this.mode = 'edit';
-      }
-    });
-  }
+constructor() {
+  this.route.queryParamMap.subscribe((params) => {
+    const modeParam = params.get('mode');
+    if (modeParam === 'edit') {
+      this.mode = 'edit';
+    }
+  });
+
+  this.route.paramMap.subscribe((params) => {
+    const id = params.get('id');
+    if (id) {
+      this.loadEvent(id);
+    }
+  });
+}
+loadEvent(id: string) {
+  this.eventService.getOne(id).subscribe((event) => {
+    if (event) {
+      this.model = event;
+    } else {
+      console.warn('Event not found for ID:', id);
+    }
+  });
+}
+  
   model: EventModel = {
     id: '',
     title: '',
@@ -54,12 +70,10 @@ eventModel: WritableSignal<EventModel | undefined> = signal(undefined);
     participants: [],
     image: '',
   };
-  get formInputs(): (keyof EventModel)[] {
+  formInputs(): (keyof EventModel)[] {
     return ['title', 'description', 'location', 'image'];
   }
   onDateSelected(date: string) {
-    console.log('EventFormComponent initialized with mode:', this.mode);
-    console.log('EventFormComponent eventId:', this.eventId);
     const index = this.model.date.indexOf(date);
     if (index > -1) {
       this.model.date.splice(index, 1);
@@ -82,6 +96,7 @@ eventModel: WritableSignal<EventModel | undefined> = signal(undefined);
         this.eventService.updateOne(event.id, event);
         console.log('Event updated:', event.id);
       }
+      this.router.navigate(['/event']);
     } catch (error) {
       console.error('Error during form submit:', error);
     }

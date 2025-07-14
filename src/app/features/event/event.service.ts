@@ -12,21 +12,32 @@ export class EventService {
   getAll(): Observable<EventModel[]> {
     return this.eventCollection.valueChanges();
   }
-getOne(id: string): Observable<EventModel | undefined> {
-  return this.eventCollection.doc(id).valueChanges();
-}
+  getOne(id: string): Observable<EventModel | undefined> {
+    if (id) {
+      return this.eventCollection.doc(id).valueChanges();
+    }
+    throw new Error('getOne: ID is required');
+  }
 
-  addOne(event: EventModel) {
+  addOne(event: EventModel): Promise<string> {
     const id = this._client.createId();
-    return this.eventCollection.doc(id).set({ ...event, id });
-    
+    return this.eventCollection
+      .doc(id)
+      .set({ ...event, id })
+      .then(() => id);
   }
 
   updateOne(id: string, event: Partial<EventModel>): Promise<void> {
-    return this.eventCollection.doc(id).update(event);
+    if (id) {
+      return this.eventCollection.doc(id).update(event);
+    }
+    return Promise.reject('updateOne: ID is required');
   }
 
   deleteOne(id: string): Promise<void> {
-    return this.eventCollection.doc(id).delete();
+    if (id) {
+      return this.eventCollection.doc(id).delete();
+    }
+    return Promise.reject('deleteOne: ID is required');
   }
 }

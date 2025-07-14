@@ -11,31 +11,46 @@ import { map, from, switchMap } from 'rxjs';
 import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
 import { AsyncPipe } from '@angular/common';
 import { UserService } from '../user/user.service';
+import { EventDetailComponent } from "./event-detail.component";
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styles: [],
-  imports: [ParticipantEmailToNamePipe, AsyncPipe, RouterModule, DynamicListComponent],
+  imports: [ParticipantEmailToNamePipe, AsyncPipe, RouterModule, DynamicListComponent, EventDetailComponent],
   standalone: true,
 })
 export class EventComponent {
   eventService: EventService = inject(EventService);
-
-  userService = inject(UserService);
+  userService: UserService = inject(UserService);
   router = inject(Router);
-  event = EventService;
+
 
   users$ = this.userService.getAll();
   events$ = this.eventService.getAll();
 
-  mapToFields = (model: EventModel): DynamicListFields => ({
-    title1: `${model.title}`,
-    description: `${model.description}`,
-    additionalInfo: `where: ${model.location}
-      - when: ${model.date}`,
-    image: `${model.image}`,
-  });
+
   goToEvent(item: EventModel): void {
-    this.router.navigate(['/event', item.id]);
+    this.router.navigate(['/eventDetail', item.id]);
   }
+    onEditClick(Event: EventModel) {
+    this.selectedEvent = Event;
+  }
+    selectedEvent: EventModel = {
+    id: '',
+    title: '',
+    description: '',
+    date: [],
+    location: '',
+    participants: [],
+    image: '',
+  };
+
+  // event = EventService;
+  // mapToFields = (model: EventModel): DynamicListFields => ({
+  //   title1: `${model.title}`,
+  //   description: `${model.description}`,
+  //   additionalInfo: `where: ${model.location}
+  //     - when: ${model.date}`,
+  //   image: `${model.image}`,
+  // });
 }

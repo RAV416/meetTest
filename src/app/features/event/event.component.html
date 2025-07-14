@@ -1,14 +1,27 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center">Events List</h2>
-  <button class="btn btn-primary" routerLink="/eventForm">Create event</button>
-<ng-template #misc let-event>
-  {{ event.participants | participantEmailToName : ((users$ | async) || []) }}
-</ng-template>
-    <app-dynamic-list
-      [serviceType]="event"
-      [fieldMapper]="mapToFields"
-      [miscTemplate]="misc"
-      (cardClicked)="goToEvent($event)"
+  <button class="btn btn-primary" [routerLink]="['/eventForm/create']">
+    Create event
+  </button>
+
+  <div class="list-group mt-3">
+    @for (event of events$ | async; track event.id; let i = $index;) {
+    <a
+      class="list-group-item list-group-item-action"
+      [routerLink]="['/eventDetail', event.id]"
     >
-    </app-dynamic-list>
+      <h5 class="mb-1">{{ event.title }}</h5>
+      <p class="mb-1">{{ event.description }}</p>
+      @for (date of event.date; track date; let i = $index;) {
+      <li>{{ date }}</li>}
+    </a>
+    <button
+      class="btn btn-outline-secondary btn-light"
+      (click)="goToEvent(event)"
+    >
+      details?
+    </button>
+    }
+
+  </div>
 </div>

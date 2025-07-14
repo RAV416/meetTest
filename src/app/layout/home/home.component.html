@@ -2,9 +2,11 @@
   <div class="flex-grow-1" style="background-color: rgb(99, 99, 99)">
     @if (user$ | async; as user) {
     <app-navbar></app-navbar>
-    <p>Welcome, {{ user.email }}</p>
-    <div>
-      <button class="btn btn-secondary" (click)="logout()">Logout</button>
+    <div class="bg-light text-end py-3 mt-auto border-top">
+      <h1 class="mb-0">
+        {{ user.email }}
+        <button class="btn btn-secondary" (click)="logout()">Logout</button>
+      </h1>
     </div>
     <router-outlet />
     } @else {

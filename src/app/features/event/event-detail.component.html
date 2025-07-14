@@ -7,27 +7,31 @@
       style="width: 80px; height: 80px; object-fit: cover"
       alt="No image available"
     />
+    <button class="btn btn-primary mb-2" (click)="showCalendar = !showCalendar">
+      {{showCalendar ? 'Hide Calendar' : 'Show Calendar'}}
+    </button>
     @if(showCalendar){
-    <app-calendar></app-calendar>
-  }
-    <button
-      class="btn btn-primary mb-2"
-      (click)="showCalendar = !showCalendar">Show Calendar</button>
+      <app-calendar></app-calendar>
+    }
 
     <div class="card-body">
       <h5 class="card-title">{{ event.title }}</h5>
       <p class="card-text">{{ event.description }}</p>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Date:</strong> {{ event.date }}</li>
-      <li class="list-group-item">
-        <strong>Location: </strong>{{ event.location }}
+      <li class="list-group-item"><strong>Date:</strong>
+      @for (date of event.date; track date; let i = $index;) {
+        <li>{{ date }}</li>
+      }
+      </li>
+      <li class="list-group-item"><strong>Location: </strong>{{ event.location }}
       </li>
       <li class="list-group-item">
+        @if (users$ | async; as users){
         <strong>Participants: </strong
         >{{
-          event.participants | participantEmailToName : (users$ | async) ?? []
-        }}
+          event.participants | participantEmailToName : users
+        }}}
       </li>
     </ul>
     <div class="card-body">
@@ -36,53 +40,23 @@
       </button>
       <button
         class="btn btn-secondary"
-        routerLink="/eventForm"
-
-        [queryParams]="{ mode: 'edit', id: eventId }"
+        [routerLink]="['/eventForm', event.id]"
+        [queryParams]="{ mode: 'edit' }"
       >
         Edit Event
       </button>
     </div>
   </div>
   @if(showDeleteModal){
-  <div class="modal d-block" tabindex="-1" style="z-index: 1050">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-danger">Warning</h5>
-          <button
-            type="button"
-            class="btn-close"
-            (click)="showDeleteModal = false"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            Are you sure you want to remove this event? This action cannot be
-            undone.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="showDeleteModal = false"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            routerLink="/event"
-            (click)="deleteItem(event)"
-          >
-            Remove Event
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  } }@else{
+    <app-delete-modal
+      [item]="event"
+      [id]="event.id"
+      (closeClick)="showDeleteModal = false"
+      (deleteClick)="deleteItem(event)"
+    ></app-delete-modal>
+
+  } 
+  }@else{
   <p>Loading event details...</p>
   }
 </div>

@@ -1,12 +1,12 @@
 <div class="container mt-5" style="max-width: 500px">
-  <h2 class="mb-4 text-center">Event {{ mode | titlecase }}</h2>
+  <h2 class="mb-4 text-center">{{ mode | titlecase }} Event</h2>
   <form #form="ngForm" (ngSubmit)="onSubmit()">
     <app-calendar
       class="form-control"
       (dateSelected)="onDateSelected($event)"
     ></app-calendar>
 
-    @for (input of formInputs ; track i; let i = $index;) {
+    @for (input of formInputs() ; track i; let i = $index;) {
     <div class="mb-3">
       <label for="{{ input }}" class="form-label">{{
         input | titlecase
@@ -94,7 +94,8 @@
       class="btn btn-primary w-100"
       [disabled]="form.invalid"
     >
-      {{ mode | titlecase }} Event
+    Confirm
+        <!-- {{ mode | titlecase }} -->
     </button>
   </form>
 </div>
