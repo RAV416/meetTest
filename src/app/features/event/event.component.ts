@@ -1,41 +1,35 @@
 import { Component, inject } from '@angular/core';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import {
-  DynamicListComponent,
-  DynamicListFields,
-} from '../../shared/dynamic-list/dynamic-list.component';
-import { AuthService } from '../user/auth.service';
-import { map, from, switchMap } from 'rxjs';
-import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
-import { AsyncPipe } from '@angular/common';
-import { UserService } from '../user/user.service';
-import { EventDetailComponent } from "./event-detail.component";
+import { RouterModule } from '@angular/router';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { CalendarComponent } from "../../shared/calendar/calendar.component";
+import { EventsOverviewComponent } from "../overview/calendar-overview.component";
+
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
-  styles: [],
-  imports: [ParticipantEmailToNamePipe, AsyncPipe, RouterModule, DynamicListComponent, EventDetailComponent],
+  styles: [
+    `
+      .break-word {
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+    `,
+  ],
+  imports: [AsyncPipe, RouterModule, DatePipe, CalendarComponent, EventsOverviewComponent],
   standalone: true,
 })
 export class EventComponent {
   eventService: EventService = inject(EventService);
-  userService: UserService = inject(UserService);
-  router = inject(Router);
-
-
-  users$ = this.userService.getAll();
   events$ = this.eventService.getAll();
 
+  showCalendar = false;
 
-  goToEvent(item: EventModel): void {
-    this.router.navigate(['/eventDetail', item.id]);
-  }
-    onEditClick(Event: EventModel) {
+  onEditClick(Event: EventModel) {
     this.selectedEvent = Event;
   }
-    selectedEvent: EventModel = {
+  selectedEvent: EventModel = {
     id: '',
     title: '',
     description: '',

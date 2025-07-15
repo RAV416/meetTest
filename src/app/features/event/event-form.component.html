@@ -1,101 +1,102 @@
 <div class="container mt-5" style="max-width: 500px">
   <h2 class="mb-4 text-center">{{ mode | titlecase }} Event</h2>
+
   <form #form="ngForm" (ngSubmit)="onSubmit()">
     <app-calendar
-      class="form-control"
+      class="form-control mb-3"
       (dateSelected)="onDateSelected($event)"
     ></app-calendar>
-
-    @for (input of formInputs() ; track i; let i = $index;) {
-    <div class="mb-3">
-      <label for="{{ input }}" class="form-label">{{
-        input | titlecase
-      }}</label>
-      <input
-        [id]="input"
-        class="form-control"
-        [name]="input"
-        [(ngModel)]="model[input]"
-        #ngModelRef="ngModel"
-        [required]="isRequired(input)"
-        [attr.minlength]="3"
-        [attr.maxlength]="input === 'description' ? 500 : 50"
-        [placeholder]="
-          input === 'image' ? 'Enter imageUrl' : 'Enter your ' + input
-        "
-      />
-      @if (ngModelRef.invalid && ngModelRef.touched) {
-      <div class="text-danger">{{ input | titlecase }} is required.</div>
-      }
-    </div>
+@if(model.date.length === 0) {
+  Please select at least one day.
+}
+    @for (input of formInputs(); track i; let i = $index;) {
+      <div class="mb-3">
+        <label for="{{ input }}" class="form-label">{{ input | titlecase }}</label>
+        <input
+          [id]="input"
+          class="form-control"
+          [name]="input"
+          [(ngModel)]="model[input]"
+          #ngModelRef="ngModel"
+          [required]="isRequired(input)"
+          [attr.minlength]="3"
+          [attr.maxlength]="input === 'description' ? 500 : 50"
+          [placeholder]="input === 'image' ? 'Enter image URL' : 'Enter your ' + input"
+        />
+        @if (ngModelRef.invalid && ngModelRef.touched) {
+          <div class="text-danger">{{ input | titlecase }} is required.</div>
+        }
+      </div>
     }
+
     <label class="form-label">Friends</label>
     <button
       type="button"
       class="btn btn-outline-primary w-100 mb-2"
       (click)="showUserModal = true"
+      
     >
       Select Friends
     </button>
-    @if (showUserModal){
-    <div class="modal-backdrop fade show" style="z-index: 1040"></div>
-    <div class="modal d-block" tabindex="-1" style="z-index: 1050">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Select Friends</h5>
-            <button
-              type="button"
-              class="btn-close"
-              (click)="showUserModal = false"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <input
-              type="text"
-              class="form-control mb-3"
-              placeholder="Search by email..."
-              [value]="searchTerm()"
-              (input)="onSearchInput($event)"
-            />
-            <ul class="list-unstyled">
-              @for (user of filteredUsers(); track user.email) {
-              <li>
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="isSelected(user)"
-                    (change)="toggleUser(user)"
-                  />
-                  {{ user.email }}
-                  {{
-                    user.email | participantEmailToName : (users$ | async) ?? []
-                  }}
-                </label>
-              </li>
-              }
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="showUserModal = false"
-            >
-              Close
-            </button>
+
+    @if (showUserModal) {
+      <div class="modal-backdrop fade show" style="z-index: 1040"></div>
+      <div class="modal d-block" tabindex="-1" style="z-index: 1050">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Friends</h5>
+              <button type="button" class="btn-close" (click)="showUserModal = false"></button>
+            </div>
+            <div class="modal-body">
+              <input
+                type="text"
+                class="form-control mb-3"
+                placeholder="Search by email or name..."
+                [value]="searchTerm()"
+                (input)="onSearchInput($event)"
+              />
+              <ul class="list-unstyled">
+                @for (user of filteredUsers(); track user.email) {
+                  <li>
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input me-2"
+                        [checked]="isSelected(user)"
+                        (change)="toggleUser(user)"
+                      />
+                      {{ user.email }} -
+                      {{
+                        user.email | participantEmailToName : (users$ | async) ?? []
+                      }}
+                    </label>
+                  </li>
+                }
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="showUserModal = false"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     }
+@if(model.participants.length === 0) {
+  Please select at least one friend.
+}
     <button
-      type="Create event"
+      type="submit"
       class="btn btn-primary w-100"
-      [disabled]="form.invalid"
+      [disabled]="form.invalid || participantsInvalid || dateInvalid"
     >
-    Confirm
-        <!-- {{ mode | titlecase }} -->
+      Confirm
     </button>
   </form>
 </div>

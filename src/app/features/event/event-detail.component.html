@@ -1,41 +1,62 @@
 <div class="container mt-4">
-  @if (event$ | async; as event){
-  <div class="card h-100 align-items-center p-2" style="width: 100%">
-    <img
-      [src]="event.image"
-      class="img-fluid rounded-circle me-3"
-      style="width: 80px; height: 80px; object-fit: cover"
-      alt="No image available"
-    />
-    <button class="btn btn-primary mb-2" (click)="showCalendar = !showCalendar">
-      {{showCalendar ? 'Hide Calendar' : 'Show Calendar'}}
-    </button>
-    @if(showCalendar){
-      <app-calendar></app-calendar>
-    }
+  @if (event$ | async; as event) {
+  <div class="card h-100 p-3">
+    <div class="d-flex flex-column align-items-center">
+      <img
+        [src]="event.image"
+        class="img-fluid rounded-circle mb-3"
+        style="width: 100px; height: 100px; object-fit: cover"
+        alt="No image available"
+      />
+      <button
+        class="btn btn-primary mb-3"
+        (click)="showCalendar = !showCalendar"
+      >
+        {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
+      </button>
 
-    <div class="card-body">
-      <h5 class="card-title">{{ event.title }}</h5>
-      <p class="card-text">{{ event.description }}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Date:</strong>
-      @for (date of event.date; track date; let i = $index;) {
-        <li>{{ date }}</li>
+      @if (showCalendar) {
+      <app-calendar></app-calendar>
+
       }
-      </li>
-      <li class="list-group-item"><strong>Location: </strong>{{ event.location }}
+    </div>
+
+    <div class="card-body text-center">
+      <h5 class="card-title text-primary">{{ event.title }}</h5>
+      <p class="card-text text-muted">{{ event.description }}</p>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Date:</strong>
+        <ul class="mb-0 ps-3">
+          @for (date of event.date; track date; let i = $index;) {
+          <li class="list-group-item">
+            {{ date | date : "longDate" }}
+    <button
+      class="btn btn-outline-success"
+      [disabled]="isYesClicked(i)"
+      (click)="Yesclick(i)">
+      Yes ({{ yesClicks[i] }})
+    </button>
+            <button class="btn btn-outline-danger">no</button>
+          </li>
+          }
+        </ul>
       </li>
       <li class="list-group-item">
-        @if (users$ | async; as users){
-        <strong>Participants: </strong
-        >{{
-          event.participants | participantEmailToName : users
-        }}}
+        <strong>Location:</strong> {{ event.location }}
+      </li>
+      <li class="list-group-item">
+        @if (users$ | async; as users) {
+        <strong>Participants:</strong>
+        {{ event.participants | participantEmailToName : users }}
+        }
       </li>
     </ul>
-    <div class="card-body">
-      <button class="btn btn-danger" (click)="showDeleteModal = true">
+
+    <div class="card-body text-center">
+      <button class="btn btn-danger me-2" (click)="showDeleteModal = true">
         Remove Event
       </button>
       <button
@@ -47,16 +68,15 @@
       </button>
     </div>
   </div>
-  @if(showDeleteModal){
-    <app-delete-modal
-      [item]="event"
-      [id]="event.id"
-      (closeClick)="showDeleteModal = false"
-      (deleteClick)="deleteItem(event)"
-    ></app-delete-modal>
 
-  } 
-  }@else{
+  @if (showDeleteModal) {
+  <app-delete-modal
+    [item]="event"
+    [id]="event.id"
+    (closeClick)="showDeleteModal = false"
+    (deleteClick)="deleteItem(event)"
+  ></app-delete-modal>
+  } } @else {
   <p>Loading event details...</p>
   }
 </div>

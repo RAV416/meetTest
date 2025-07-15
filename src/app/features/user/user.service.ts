@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UserModel } from './user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -28,5 +28,10 @@ export class UserService {
 
   deleteOne(id: string): Promise<void> {
     return this.collection.doc(id).delete();
+  }
+  getCurrentUser(): Observable<UserModel | undefined> {
+    const id = JSON.parse(localStorage.getItem('currentUser')!)?.id;
+    if (!id) return of(undefined);
+    return this.collection.doc(id).valueChanges({ idField: 'id' });
   }
 }
