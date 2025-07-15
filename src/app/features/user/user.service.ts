@@ -17,10 +17,10 @@ export class UserService {
     return this.collection.doc(id).valueChanges({ idField: 'id' });
   }
 
-  addOne(user: UserModel): Promise<void> {
-    const id = this._client.createId();
-    return this.collection.doc(id).set({ ...user, id });
-  }
+addOne(user: UserModel): Promise<void> {
+  const id = user.id!;
+  return this.collection.doc(id).set(user);
+}
 
   updateOne(id: string, user: Partial<UserModel>): Promise<void> {
     return this.collection.doc(id).update(user);

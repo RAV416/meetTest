@@ -1,11 +1,10 @@
-import { Component, inject, output, TemplateRef } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { UserModel } from './user.model';
 import { UserService } from './user.service';
 import { RouterModule } from '@angular/router';
 import {
   DynamicListComponent,
   DynamicListFields,
-  ListDataService,
 } from '../../shared/dynamic-list/dynamic-list.component';
 
 @Component({
@@ -18,6 +17,7 @@ import {
 export class UserComponent {
   mode: 'users' | 'friends' = 'users';
   private userService = inject(UserService);
+
   service = UserService;
   readonly itemDeleted = output<string>();
   readonly itemAdded   = output<string>();
