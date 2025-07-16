@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 import { EventModel } from './event.model';
 import { inject, Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FieldValue, arrayUnion } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
@@ -39,5 +40,14 @@ export class EventService {
       return this.eventCollection.doc(id).delete();
     }
     return Promise.reject('deleteOne: ID is required');
+  }
+
+  voteYes(eventId: string, userId: string, dateIndex: number): Promise<void> {
+    const eventRef = this._client.collection('meets').doc(eventId);
+    const votePath = `votes.${userId}`;
+
+    return eventRef.update({
+      [votePath]: arrayUnion(dateIndex) as unknown as FieldValue,
+    });
   }
 }

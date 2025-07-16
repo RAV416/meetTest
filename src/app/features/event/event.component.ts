@@ -3,7 +3,6 @@ import { EventService } from './event.service';
 import { EventModel } from './event.model';
 import { RouterModule } from '@angular/router';
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { CalendarComponent } from "../../shared/calendar/calendar.component";
 import { EventsOverviewComponent } from "../overview/calendar-overview.component";
 
 @Component({
@@ -17,7 +16,7 @@ import { EventsOverviewComponent } from "../overview/calendar-overview.component
       }
     `,
   ],
-  imports: [AsyncPipe, RouterModule, DatePipe, CalendarComponent, EventsOverviewComponent],
+  imports: [AsyncPipe, RouterModule, DatePipe, EventsOverviewComponent],
   standalone: true,
 })
 export class EventComponent {

@@ -6,4 +6,5 @@ export interface EventModel {
   location: string;
   participants: string[];
   image?: string;
+  votes?: { [userId: string]: number[] };
 }

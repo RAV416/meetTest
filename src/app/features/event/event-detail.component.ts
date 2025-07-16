@@ -41,36 +41,36 @@ export class EventDetailComponent {
 
 ngOnInit() {
   combineLatest([this.loggedInUser$, this.event$]).subscribe(([user, event]) => {
-    if (!user) {
-      console.warn('No logged in user found');
-      return;
-    }
+    if (!user || !event) return;
 
     this.currentUser = user;
+    this.event = event;
 
-    // Initialize click tracking
-    if (!this.userClicked[user.id]) {
-      this.userClicked[user.id] = new Set<number>();
-    }
+    const votedIndexes = event.votes?.[user.id] ?? [];
+    this.userClicked[user.id] = new Set<number>(votedIndexes);
 
-    if (event?.date) {
-      this.yesClicks = new Array(event.date.length).fill(0);
-    }
+    this.yesClicks = event.date.map((_, i) => {
+      let count = 0;
+      for (const userVotes of Object.values(event.votes ?? {})) {
+        if (userVotes.includes(i)) count++;
+      }
+      return count;
+    });
   });
 }
 
-
+event?: EventModel;
 currentUser?: UserModel;
 userClicked: { [userId: string]: Set<number> } = {};
 yesClicks: number[] = [];
 Yesclick(index: number) {
   const userId = this.currentUser?.id;
-  if (!userId) return;
+  if (!userId || !this.event || this.userClicked[userId]?.has(index)) return;
 
-  if (this.userClicked[userId]?.has(index)) return;
-
-  this.yesClicks[index]++;
-  this.userClicked[userId].add(index);
+  this.eventService.voteYes(this.event.id, userId, index).then(() => {
+    this.yesClicks[index]++;
+ 
+  }).catch((err) => console.error('Vote error', err));
 }
 isYesClicked(index: number): boolean {
   const userId = this.currentUser?.id;
