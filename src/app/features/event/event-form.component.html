@@ -57,7 +57,7 @@
                 (input)="onSearchInput($event)"
               />
               <ul class="list-unstyled">
-                @for (user of filteredUsers(); track user.email) {
+                @for (user of filteredUsers(); track user) {
                   <li>
                     <label class="form-check-label">
                       <input
@@ -68,7 +68,7 @@
                       />
                       {{ user.email }} -
                       {{
-                        user.email | participantEmailToName : (users$ | async) ?? []
+                        user.name + ' ' + user.surname 
                       }}
                     </label>
                   </li>

@@ -6,6 +6,7 @@ import {
   DynamicListComponent,
   DynamicListFields,
 } from '../../shared/dynamic-list/dynamic-list.component';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-user',
@@ -17,15 +18,22 @@ import {
 export class UserComponent {
   mode: 'users' | 'friends' = 'users';
   private userService = inject(UserService);
-
+  private authService = inject(AuthService)
   service = UserService;
   readonly itemDeleted = output<string>();
   readonly itemAdded   = output<string>();
   readonly itemUpdated = output<{ id: string; changes: Partial<string> }>();
 
-  deleteItem(model: UserModel): void {
-    this.userService.deleteOne(model.id);
+ async  deleteItem(model: UserModel): Promise<void> {
+    try {
+    await this.authService.deleteCurrentUser();
+    await this.userService.deleteOne(model.id);
     console.log('Deleting user:', model.id);
+    }catch (error) {
+    console.error('Error during form submit:', error);
+  }
+    
+    
   }
 
   mapToFields = (model: UserModel): DynamicListFields => ({

@@ -5,6 +5,7 @@ import { FooterComponent } from '../footer.component';
 import { FormComponent } from '../../features/user/user-form.component';
 import { AuthService } from '../../features/user/auth.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { DeleteModalComponent } from "../../shared/modal/delete-modal.component";
 
 @Component({
   selector: 'app-home',
@@ -16,13 +17,16 @@ import { AsyncPipe, CommonModule } from '@angular/common';
     AsyncPipe,
     CommonModule,
     FormComponent,
-  ],
+    DeleteModalComponent
+],
   styles: [],
   standalone: true,
 })
 export class HomeComponent {
   private authService: AuthService = inject(AuthService);
   user$ = this.authService.user$;
+  showDeleteModal= false;
+
 
   login() {
     this.authService.login('test@example.com', 'password123');
@@ -30,5 +34,8 @@ export class HomeComponent {
 
   logout() {
     this.authService.logout();
+  }
+  deleteUser(){
+    this.authService.deleteCurrentUser();
   }
 }

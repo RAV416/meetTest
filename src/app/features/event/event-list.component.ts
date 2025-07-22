@@ -4,10 +4,14 @@ import { EventModel } from './event.model';
 import { RouterModule } from '@angular/router';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { EventsOverviewComponent } from "../overview/calendar-overview.component";
-
+import { UserService } from '../user/user.service';
+import { Observable } from 'rxjs';
+import { UserModel } from '../user/user.model';
+import { combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
+  selector: 'app-event-list',
+  templateUrl: './event-list.component.html',
   styles: [
     `
       .break-word {
@@ -21,7 +25,19 @@ import { EventsOverviewComponent } from "../overview/calendar-overview.component
 })
 export class EventComponent {
   eventService: EventService = inject(EventService);
-  events$ = this.eventService.getAll();
+  userService = inject(UserService);
+  events$ = combineLatest([
+  this.eventService.getAll(),
+  this.userService.getCurrentUser().pipe(
+    filter((user): user is UserModel => !!user) 
+  )
+]).pipe(
+  map(([events, user]) =>
+    events.filter(event => event.participants.includes(user.id))
+  )
+);
+
+
 
   showCalendar = false;
 
@@ -37,13 +53,4 @@ export class EventComponent {
     participants: [],
     image: '',
   };
-
-  // event = EventService;
-  // mapToFields = (model: EventModel): DynamicListFields => ({
-  //   title1: `${model.title}`,
-  //   description: `${model.description}`,
-  //   additionalInfo: `where: ${model.location}
-  //     - when: ${model.date}`,
-  //   image: `${model.image}`,
-  // });
 }

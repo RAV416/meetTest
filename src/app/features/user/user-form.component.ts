@@ -71,12 +71,9 @@ export class FormComponent {
   getInputPattern(credential: string): string {
     switch (credential) {
       case 'email':
-        return '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,4}$';
+        return '^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$';
       case 'password':
         return '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}';
-      case 'name':
-      case 'surname':
-        return '^[a-zA-Z ]+$';
       default:
         return '';
     }

@@ -13,7 +13,6 @@ import { EventModel } from './event.model';
 import { UserService } from '../user/user.service';
 import { UserModel } from '../user/user.model';
 import { CalendarComponent } from '../../shared/calendar/calendar.component';
-import { ParticipantEmailToNamePipe } from '../../shared/custom pipes/participants.pipe';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -22,9 +21,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [
     CommonModule,
     FormsModule,
-    AsyncPipe,
     CalendarComponent,
-    ParticipantEmailToNamePipe,
   ],
   templateUrl: './event-form.component.html',
 })
@@ -121,29 +118,31 @@ get participantsInvalid(): boolean {
         const newEvent = { ...this.model, id: this.model.id };
         this.eventService.addOne(newEvent);
         console.log('Event created:', newEvent.title);
+        this.router.navigate(['/event']);
       } else {
         this.eventService.updateOne(this.model.id, this.model);
         console.log('Event updated:', this.model.id);
+        this.router.navigate([`/eventDetail/${this.model.id}`]);
       }
-      this.router.navigate(['/event']);
+      
     } catch (error) {
       console.error('Error during form submit:', error);
     }
   }
   toggleUser(user: UserModel) {
     const participants = [...this.model.participants];
-    const index = participants.indexOf(user.email);
+    const index = participants.indexOf(user.id);
 
     if (index > -1) {
       participants.splice(index, 1);
     } else {
-      participants.push(user.email);
+      participants.push(user.id);
     }
 
     this.model = { ...this.model, participants };
   }
   isSelected(user: UserModel): boolean {
-    return this.model.participants.includes(user.email);
+    return this.model.participants.includes(user.id);
   }
 
 }

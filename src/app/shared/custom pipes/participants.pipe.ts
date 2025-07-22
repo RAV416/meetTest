@@ -2,24 +2,38 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { UserModel } from '../../features/user/user.model';
 
 @Pipe({
-  name: 'participantEmailToName',
+  name: 'userIdToCredentialPipe',
   standalone: true,
 })
-export class ParticipantEmailToNamePipe implements PipeTransform {
-  transform(participantIds: string[] | string, users: UserModel[]): string {
-    if (!participantIds || !users?.length) return '';
+export class UserIdToCredentialPipe implements PipeTransform {
+   transform(
+    input: string | string[],
+    users: UserModel[],
+    returnField: 'email' | 'name' | 'surname' | 'fullName' = 'fullName',
+  ): string {
+    if (!input || !users?.length) return '';
 
-    const ids = (
-      Array.isArray(participantIds) ? participantIds : [participantIds]
-    ).filter((email) => !!email);
+    const values = (Array.isArray(input) ? input : [input]).filter(Boolean);
 
-    if (ids.length === 0) return '';
+    const result = values.map((value) => {
+      const user =
+        users.find((u) => u.id === value) ||
+        users.find((u) => u.email === value);
 
-    const names = ids.map((email) => {
-      const user = users.find((u) => u.email === email);
-      return user ? `${user.name} ${user.surname}` : 'Unknown';
+      if (!user) return 'Unknown';
+
+      switch (returnField) {
+        case 'fullName':
+          return `${user.name} ${user.surname}`;
+        case 'name':
+        case 'surname':
+        case 'email':
+          return user[returnField] || 'Unknown';
+        default:
+          return 'Unknown';
+      }
     });
 
-    return names.join(', ');
+    return result.join(', ');
   }
 }

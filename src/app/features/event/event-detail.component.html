@@ -8,19 +8,7 @@
         style="width: 100px; height: 100px; object-fit: cover"
         alt="No image available"
       />
-      <button
-        class="btn btn-primary mb-3"
-        (click)="showCalendar = !showCalendar"
-      >
-        {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
-      </button>
-
-      @if (showCalendar) {
-      <app-calendar></app-calendar>
-
-      }
     </div>
-
     <div class="card-body text-center">
       <h5 class="card-title text-primary">{{ event.title }}</h5>
       <p class="card-text text-muted">{{ event.description }}</p>
@@ -31,18 +19,34 @@
         <strong>Date:</strong>
         <ul class="mb-0 ps-3">
           @for (date of event.date; track date; let i = $index;) {
-          <li class="list-group-item">
+          <li
+            voteProgress
+            [votes]="yesClicks[i]"
+            [total]="event.participants.length"
+            class="list-group-item"
+          >
             {{ date | date : "longDate" }}
-    <button
-      class="btn btn-outline-success"
-      [disabled]="isYesClicked(i)"
-      (click)="Yesclick(i)">
-      Yes ({{ yesClicks[i] }})
-    </button>
-            <button class="btn btn-outline-danger">no</button>
+            <button class="btn btn-danger" (click)="noClick(i)">no</button>
+            <button
+              class="btn btn-success"
+              [disabled]="isYesClicked(i)"
+              (click)="yesClick(i)"
+            >
+              Yes ({{ yesClicks[i] }})
+            </button>
           </li>
           }
         </ul>
+        <button
+          class="btn btn-primary mb-3"
+          (click)="showCalendar = !showCalendar"
+        >
+          {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
+        </button>
+
+        @if (showCalendar) {
+        <app-calendar></app-calendar>
+        }
       </li>
       <li class="list-group-item">
         <strong>Location:</strong> {{ event.location }}
@@ -50,7 +54,7 @@
       <li class="list-group-item">
         @if (users$ | async; as users) {
         <strong>Participants:</strong>
-        {{ event.participants | participantEmailToName : users }}
+        {{ event.participants | userIdToCredentialPipe : users : "fullName" }}
         }
       </li>
     </ul>
@@ -75,8 +79,10 @@
     [id]="event.id"
     (closeClick)="showDeleteModal = false"
     (deleteClick)="deleteItem(event)"
-  ></app-delete-modal>
-  } } @else {
+    >Are you sure you want to remove this event? This action cannot be
+    undone.</app-delete-modal
+  >
+  } }@else {
   <p>Loading event details...</p>
   }
 </div>

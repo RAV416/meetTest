@@ -3,7 +3,7 @@ import { HomeComponent } from './layout/home/home.component';
 import { FormComponent } from './features/user/user-form.component';
 import { NotFoundComponent } from './app.error';
 import { CalendarComponent } from './shared/calendar/calendar.component';
-import { EventComponent } from './features/event/event.component';
+import { EventComponent } from './features/event/event-list.component';
 import { UserComponent } from './features/user/user.component';
 import { EventFormComponent } from './features/event/event-form.component';
 import { EventsOverviewComponent } from './features/overview/calendar-overview.component';

@@ -6,6 +6,17 @@
       <h1 class="mb-0">
         {{ user.email }}
         <button class="btn btn-secondary" (click)="logout()">Logout</button>
+        <button class="btn btn-danger" (click)="showDeleteModal = true">
+          Delete User
+        </button>
+        @if (showDeleteModal) {
+        <app-delete-modal
+          (closeClick)="showDeleteModal = false"
+          (deleteClick)="deleteUser()"
+        > Are you sure you want to remove your account? This action cannot
+                be undone.
+      </app-delete-modal>
+        }
       </h1>
     </div>
     <router-outlet />

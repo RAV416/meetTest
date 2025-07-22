@@ -10,7 +10,6 @@ export class AuthService {
   private _auth = inject(AngularFireAuth);
   private _userService = inject(UserService);
   user$: Observable<firebase.User | null> = this._auth.authState;
-  userService: any;
 
   constructor(private auth: AngularFireAuth) {
     this.user$.subscribe(user => {
@@ -48,6 +47,7 @@ async login(email: string, password: string): Promise<firebase.auth.UserCredenti
 
   logout(): Promise<void> {
     return this._auth.signOut();
+    
   }
 
   getCurrentUser(): Promise<firebase.User | null> {
@@ -57,4 +57,25 @@ async login(email: string, password: string): Promise<firebase.auth.UserCredenti
   isLoggedIn(): boolean {
     return !!this._auth.currentUser;
   }
+
+  async deleteCurrentUser(): Promise<void> {
+  const user = await this._auth.currentUser;
+
+  if (!user) {
+    throw new Error('No user is currently logged in.');
+  }
+
+  const uid = user.uid;
+
+  try {
+    await this._userService.deleteOne(uid);
+    await user.delete();
+    localStorage.removeItem('currentUser');
+    await this._auth.signOut();
+    console.log(`User ${uid} deleted successfully.`);
+  } catch (err) {
+    console.error('Failed to delete user:', err);
+    throw err;
+  }
+}
 }
