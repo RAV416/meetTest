@@ -9,7 +9,7 @@ import { CalendarComponent } from '../../shared/calendar/calendar.component';
 import { UserIdToCredentialPipe } from '../../shared/custom pipes/participants.pipe';
 import { UserService } from '../user/user.service';
 import { DeleteModalComponent } from '../../shared/modal/delete-modal.component';
-import { VoteProgressDirective } from '../../shared/custom directives/-progress.directive';
+import { VoteProgressDirective } from '../../shared/custom directives/voteProgress.directive';
 
 @Component({
   selector: 'app-event-detail',
