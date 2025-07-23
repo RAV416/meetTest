@@ -28,7 +28,7 @@ export class EventFormComponent {
     id: '',
     title: '',
     description: '',
-    date: [],
+    date: [] as string[],
     location: '',
     participants: [],
     image: '',
@@ -73,7 +73,6 @@ export class EventFormComponent {
     } else {
       dates.push(date);
     }
-    console.log(this.model);
   }
   get dateInvalid(): boolean {
     return this.model.date.length === 0;

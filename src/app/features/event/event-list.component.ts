@@ -39,7 +39,7 @@ export class EventComponent {
 
 
 
-  showCalendar = false;
+  
 
   onEditClick(Event: EventModel) {
     this.selectedEvent = Event;

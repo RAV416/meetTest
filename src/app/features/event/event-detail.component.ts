@@ -63,7 +63,8 @@ export class EventDetailComponent {
       }
     );
   }
-a
+
+  
   event?: EventModel;
   currentUser?: UserModel;
   userClicked: { [userId: string]: Set<number> } = {};

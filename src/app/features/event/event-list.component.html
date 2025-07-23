@@ -1,12 +1,5 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary mb-3" (click)="showCalendar = !showCalendar">
-      {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
-    </button>
-  </div>
-  @if (showCalendar) {
-  <app-events-overview></app-events-overview>
-  }
+
   <h2 class="mb-4 text-center">Events List</h2>
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary" [routerLink]="['/eventForm/create']">

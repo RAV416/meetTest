@@ -1,60 +1,74 @@
-import { Component, EventEmitter, forwardRef, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timeGrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  imports: [CommonModule, FullCalendarModule, ],
+  imports: [CommonModule, FullCalendarModule],
   styleUrls: ['./calendar.component.scss'],
   standalone: true,
-    providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CalendarComponent),
-      multi: true,
-    },
-  ],
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnChanges {
+  @Input() currentDates: string[] = [];
+  @Output() dateSelected = new EventEmitter<string>();
+  @Output() clickDate = new EventEmitter<string>();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['currentDates']) {
+      this.selectedDates = [...this.currentDates];
+      this.updateCalendarOptions();
+    }
+  }
+  selectedDates: string[] = [];
   calendarOptions: CalendarOptions = {
+    firstDay: 1,
+    height: 'auto',
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin , timeGridPlugin, interactionPlugin],
-    dateClick: (arg) => this.handleDateClick(arg),
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    dateClick: (click) => this.handleDateClick(click),
     dayCellClassNames: (arg) => {
-      const isSelected = this.selectedDates.includes(arg['dateStr']);
-      if (isSelected) console.log('Selected:', arg['dateStr']);
+      const date = arg.date.toLocaleDateString('en-CA');
+      const isSelected = this.selectedDates.includes(date);
       return isSelected ? ['selected-date'] : [];
     },
     selectable: true,
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek'
-      },
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek',
+    },
   };
 
-  @Output() dateSelected = new EventEmitter<string>();
-  selectedDates: string[] = [];
- 
-
-  // handleDateClick(arg: DateClickArg) {
-  //     this.dateSelected.emit(arg.dateStr);
-  // }
-handleDateClick(arg: DateClickArg) {
-  const idx = this.selectedDates.indexOf(arg.dateStr);
-  if (idx > -1) {
-    this.selectedDates.splice(idx, 1);
-  } else {
-    this.selectedDates.push(arg.dateStr);
+  handleDateClick(arg: DateClickArg) {
+    const idx = this.selectedDates.indexOf(arg.dateStr);
+    if (idx > -1) {
+      this.selectedDates.splice(idx, 1);
+    } else {
+      this.selectedDates.push(arg.dateStr);
+    }
+    this.dateSelected.emit(arg.dateStr);
+    this.updateCalendarOptions();
   }
-  this.dateSelected.emit(arg.dateStr);
 
-  this.calendarOptions = { ...this.calendarOptions };
-}
+  updateCalendarOptions() {
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      dayCellClassNames: (arg) => {
+        const date = arg.date.toLocaleDateString('en-CA');
+        const isSelected = this.selectedDates.includes(date);
+        return isSelected ? ['selected-date'] : [];
+      },
+    };
+  }
 }

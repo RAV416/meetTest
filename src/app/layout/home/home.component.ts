@@ -6,6 +6,7 @@ import { UserFormComponent } from '../../features/user/user-form.component';
 import { AuthService } from '../../features/user/auth.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { DeleteModalComponent } from "../../shared/modal/delete-modal.component";
+import { EventsOverviewComponent } from "../../features/overview/calendar-overview.component";
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,8 @@ import { DeleteModalComponent } from "../../shared/modal/delete-modal.component"
     AsyncPipe,
     CommonModule,
     DeleteModalComponent,
-    UserFormComponent
+    UserFormComponent,
+    EventsOverviewComponent
 ],
   styles: [],
   standalone: true,
@@ -26,7 +28,7 @@ export class HomeComponent {
   private authService: AuthService = inject(AuthService);
   user$ = this.authService.user$;
   showDeleteModal= false;
-
+  showCalendar = false;
 
   login() {
     this.authService.login('test@example.com', 'password123');
