@@ -22,7 +22,7 @@ interface Credential {
   imports: [FormsModule, RouterModule, TitleCasePipe],
   standalone: true,
 })
-export class FormComponent {
+export class UserFormComponent {
   private userService: UserService = inject(UserService);
   private authService: AuthService = inject(AuthService);
   route: ActivatedRoute = inject(ActivatedRoute);
@@ -94,8 +94,6 @@ async onSubmit() {
       console.log('User updated:', user.id);
     } else {
       await this.authService.login(user.email, user.password!);
-
-       
       console.log('User logged in:', user.email);
     }
   } catch (error) {

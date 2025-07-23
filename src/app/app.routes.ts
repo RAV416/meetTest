@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './layout/home/home.component';
-import { FormComponent } from './features/user/user-form.component';
+import { UserFormComponent } from './features/user/user-form.component';
 import { NotFoundComponent } from './app.error';
 import { CalendarComponent } from './shared/calendar/calendar.component';
 import { EventComponent } from './features/event/event-list.component';
@@ -18,7 +18,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'calendar', pathMatch: 'full' },
       { path: 'calendar', component: EventsOverviewComponent },
       { path: 'user', component: UserComponent },
-      { path: 'form/:mode', component: FormComponent },
+      { path: 'userForm/:mode', component: UserFormComponent },
       { path: 'eventForm/create', component: EventFormComponent },
       { path: 'eventForm/:id', component: EventFormComponent },
       { path: 'event', component: EventComponent },

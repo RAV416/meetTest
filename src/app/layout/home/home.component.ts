@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar.component';
 import { FooterComponent } from '../footer.component';
-import { FormComponent } from '../../features/user/user-form.component';
+import { UserFormComponent } from '../../features/user/user-form.component';
 import { AuthService } from '../../features/user/auth.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { DeleteModalComponent } from "../../shared/modal/delete-modal.component";
@@ -16,8 +16,8 @@ import { DeleteModalComponent } from "../../shared/modal/delete-modal.component"
     FooterComponent,
     AsyncPipe,
     CommonModule,
-    FormComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    UserFormComponent
 ],
   styles: [],
   standalone: true,

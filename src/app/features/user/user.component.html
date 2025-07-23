@@ -3,9 +3,7 @@
   <button class="btn btn-primary" routerLink="/user">Add Friends</button>
 
     <ng-template #misc let-item>
-      <button class="btn btn-danger" (click)="deleteItem(item)">
-        Remove Friend
-      </button>
+      
     </ng-template>
     <app-dynamic-list
       [serviceType]="service"

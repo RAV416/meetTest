@@ -24,17 +24,6 @@ export class UserComponent {
   readonly itemAdded   = output<string>();
   readonly itemUpdated = output<{ id: string; changes: Partial<string> }>();
 
- async  deleteItem(model: UserModel): Promise<void> {
-    try {
-    await this.authService.deleteCurrentUser();
-    await this.userService.deleteOne(model.id);
-    console.log('Deleting user:', model.id);
-    }catch (error) {
-    console.error('Error during form submit:', error);
-  }
-    
-    
-  }
 
   mapToFields = (model: UserModel): DynamicListFields => ({
     title1: `Name: ${model.name} ${model.surname}`,

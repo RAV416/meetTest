@@ -26,7 +26,9 @@
             class="list-group-item"
           >
             {{ date | date : "longDate" }}
-            <button class="btn btn-danger" (click)="noClick(i)">no</button>
+            <button class="btn btn-danger" 
+            [disabled]="!isYesClicked(i)"
+            (click)="noClick(i)">no</button>
             <button
               class="btn btn-success"
               [disabled]="isYesClicked(i)"

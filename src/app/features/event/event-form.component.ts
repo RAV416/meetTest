@@ -1,28 +1,18 @@
-import {
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import { CommonModule, AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
 import { UserService } from '../user/user.service';
-import { UserModel } from '../user/user.model';
 import { CalendarComponent } from '../../shared/calendar/calendar.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ToggleListComponent } from '../../shared/modal/toggle-list.component';
 
 @Component({
   selector: 'app-event-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    CalendarComponent,
-  ],
+  imports: [CommonModule, FormsModule, CalendarComponent, ToggleListComponent],
   templateUrl: './event-form.component.html',
 })
 export class EventFormComponent {
@@ -43,23 +33,9 @@ export class EventFormComponent {
     participants: [],
     image: '',
   };
-
   mode: 'create' | 'edit' = 'create';
   showUserModal = false;
 
-  searchTerm = signal('');
-  filteredUsers = computed(() => {
-    const term = this.searchTerm().toLowerCase();
-    return this.users().filter((user) =>
-      [user.email, user.name, user.surname]
-        .filter(Boolean)
-        .some((value) => value!.toLowerCase().includes(term))
-    );
-  });
-  onSearchInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.searchTerm.set(input.value);
-  }
   constructor() {
     this.route.queryParamMap.subscribe((params) => {
       const modeParam = params.get('mode');
@@ -67,7 +43,6 @@ export class EventFormComponent {
         this.mode = 'edit';
       }
     });
-
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
@@ -98,21 +73,15 @@ export class EventFormComponent {
     } else {
       dates.push(date);
     }
+    console.log(this.model);
   }
-
-
-get dateInvalid(): boolean {
-  return (
-    this.model.date.length === 0
-  );
-}
-get participantsInvalid(): boolean {
-  return (
-    this.model.participants.length === 0
-  );
-}
+  get dateInvalid(): boolean {
+    return this.model.date.length === 0;
+  }
+  get participantsInvalid(): boolean {
+    return this.model.participants.length === 0;
+  }
   onSubmit() {
-
     try {
       if (this.mode === 'create') {
         const newEvent = { ...this.model, id: this.model.id };
@@ -124,25 +93,8 @@ get participantsInvalid(): boolean {
         console.log('Event updated:', this.model.id);
         this.router.navigate([`/eventDetail/${this.model.id}`]);
       }
-      
     } catch (error) {
       console.error('Error during form submit:', error);
     }
   }
-  toggleUser(user: UserModel) {
-    const participants = [...this.model.participants];
-    const index = participants.indexOf(user.id);
-
-    if (index > -1) {
-      participants.splice(index, 1);
-    } else {
-      participants.push(user.id);
-    }
-
-    this.model = { ...this.model, participants };
-  }
-  isSelected(user: UserModel): boolean {
-    return this.model.participants.includes(user.id);
-  }
-
 }
