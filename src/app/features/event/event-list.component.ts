@@ -2,17 +2,18 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
 import { RouterModule } from '@angular/router';
-import { DatePipe, formatDate } from '@angular/common';
+import { CommonModule, DatePipe, formatDate } from '@angular/common';
 import { UserService } from '../user/user.service';
 import { UserModel } from '../user/user.model';
 import { combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
   styles: [],
-  imports: [RouterModule, DatePipe],
+  imports: [RouterModule, DatePipe, CommonModule],
   standalone: true,
 })
 export class EventComponent {

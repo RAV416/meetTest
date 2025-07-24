@@ -9,8 +9,8 @@
         {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}📅
       </button>
       @if (showCalendar) {
-      <div class="calendar-overlay" (click)="showCalendar = false">
-        <app-events-overview></app-events-overview>
+      <div class="calendar-overlay" >
+        <app-calendar-overview></app-calendar-overview>
       </div>
       }
       <h3 class="text-end">

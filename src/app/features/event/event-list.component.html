@@ -14,10 +14,10 @@
       />
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-outline-primary" (click)="showDescriptionClick()">
+      <button class="btn btn-primary" (click)="showDescriptionClick()">
         {{ showDescription ? "Hide Description" : "Show Description" }}
       </button>
-      <button class="btn btn-outline-primary" (click)="showDatesClick()">
+      <button class="btn btn-primary" (click)="showDatesClick()">
         {{ showDates ? "Hide Dates" : "Show Dates" }}
       </button>
       <button class="btn btn-success" [routerLink]="['/eventForm/create']">
@@ -39,9 +39,9 @@
           style="cursor: pointer"
         >
           <div>
-            <h5 class="card-title text-primary text-center">
+            <h3 class="card-title text-primary text-center">
               {{ event.title }}
-            </h5>
+            </h3>
             @if (showDescription) {
             <p class="card-text text-muted text-break text-center">
               {{ event.description }}
@@ -50,7 +50,12 @@
           </div>
           @if (showDates) {
           <ul class="list-group list-group-flush mt-3">
-            <li class="list-group-item text-center">
+            <li
+              class="list-group-item text-center"
+              [ngStyle]="{
+                'background-color': event.date.length === 1 ? 'yellow' : 'white'
+              }"
+            >
               {{ event.date[0] | date : "longDate" }}
               @if(event.date.length > 1) { -
               {{ event.date[event.date.length - 1] | date : "longDate" }}

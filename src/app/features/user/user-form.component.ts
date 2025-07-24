@@ -91,7 +91,6 @@ export class UserFormComponent {
           user.name,
           user.surname
         );
-        
         console.log('User created and registered:', user.email);
       } else if (this.mode === 'edit') {
         await this.userService.updateOne(user.id!, user);

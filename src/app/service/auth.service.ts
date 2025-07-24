@@ -53,8 +53,9 @@ export class AuthService {
       email,
       id: uid,
     };
-    await this._userService.addOne(userModel);
-    localStorage.setItem('currentUser', JSON.stringify({ id: uid }));
+    await localStorage.setItem('currentUser', JSON.stringify({ id: uid }));
+    this._userService.addOne(userModel);
+    
   }
 
   logout(): Promise<void> {

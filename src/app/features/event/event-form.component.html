@@ -7,12 +7,12 @@
       [currentDates]="model.date"
       (dateSelected)="onDateSelected($event)"
     ></app-calendar>
-    @if(model.date.length === 0) { Please select at least one day. } @for (input
-    of formInputs(); track i; let i = $index;) {
+    @if(model.date.length === 0) { Please select at least one day. } 
+    @for (input of formInputs(); track input) {
     <div class="mb-3">
-      <label for="{{ input }}" class="form-label">{{
-        input | titlecase
-      }}</label>
+      <label for="{{ input }}" class="form-label">
+        {{ input | titlecase }}
+      </label>
       <input
         [id]="input"
         class="form-control"
@@ -48,12 +48,13 @@
       [selectedUserIds]="model.participants"
       (selectedUserIdsChange)="model.participants = $event"
     />
-    } @if(model.participants.length <= 1) { Please select at least one friend.
-    }
+    } @if(model.participants.length <= 1) { Please select at least one friend. }
     <button
       type="submit"
       class="btn btn-primary w-100"
-      [disabled]="form.invalid || participantsInvalid || dateInvalid || !currentUser"
+      [disabled]="
+        form.invalid || participantsInvalid || dateInvalid || !currentUser
+      "
     >
       Confirm
     </button>
