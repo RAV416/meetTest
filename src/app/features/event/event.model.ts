@@ -7,4 +7,5 @@ export interface EventModel {
   participants: string[];
   image?: string;
   votes?: { [userId: string]: number[] };
+  createdBy: string
 }

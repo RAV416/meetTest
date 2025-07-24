@@ -20,16 +20,16 @@
           Delete User
         </button>
       </h3>
-      @if (showDeleteModal) {
-      <app-delete-modal
-        (closeClick)="showDeleteModal = false"
-        (deleteClick)="deleteUser()"
-      >
-        Are you sure you want to remove your account? This action cannot be
-        undone.
-      </app-delete-modal>
-      }
     </div>
+    @if (showDeleteModal) {
+    <app-delete-modal
+      (closeClick)="showDeleteModal = false"
+      (deleteClick)="deleteUser()"
+    >
+      Are you sure you want to remove your account? This action cannot be
+      undone.
+    </app-delete-modal>
+    }
     <router-outlet />
     } @else {
     <app-user-form></app-user-form>

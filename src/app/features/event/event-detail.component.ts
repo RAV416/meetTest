@@ -39,11 +39,11 @@ export class EventDetailComponent {
     switchMap((params) => this.eventService.getOne(params.get('id')!))
   );
   users$: Observable<UserModel[]> = this.userService.getAll();
-  loggedInUser$: Observable<UserModel | undefined> =
+  currentUser$: Observable<UserModel | undefined> =
     this.userService.getCurrentUser();
- 
+
   ngOnInit() {
-    combineLatest([this.loggedInUser$, this.event$]).subscribe(
+    combineLatest([this.currentUser$, this.event$]).subscribe(
       ([user, event]) => {
         if (!user || !event) return;
 
@@ -64,7 +64,6 @@ export class EventDetailComponent {
     );
   }
 
-  
   event?: EventModel;
   currentUser?: UserModel;
   userClicked: { [userId: string]: Set<number> } = {};

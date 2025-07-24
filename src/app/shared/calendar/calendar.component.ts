@@ -23,7 +23,8 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 export class CalendarComponent implements OnChanges {
   @Input() currentDates: string[] = [];
   @Output() dateSelected = new EventEmitter<string>();
-  @Output() clickDate = new EventEmitter<string>();
+  @Output() clickDate = new EventEmitter<Date>();
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentDates']) {
       this.selectedDates = [...this.currentDates];
@@ -36,7 +37,8 @@ export class CalendarComponent implements OnChanges {
     height: 'auto',
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    dateClick: (click) => this.handleDateClick(click),
+    dateClick: (click) => {this.handleDateClick(click)
+    },
     dayCellClassNames: (arg) => {
       const date = arg.date.toLocaleDateString('en-CA');
       const isSelected = this.selectedDates.includes(date);
@@ -49,7 +51,7 @@ export class CalendarComponent implements OnChanges {
       right: 'dayGridMonth,timeGridWeek',
     },
   };
-
+  
   handleDateClick(arg: DateClickArg) {
     const idx = this.selectedDates.indexOf(arg.dateStr);
     if (idx > -1) {
@@ -57,7 +59,9 @@ export class CalendarComponent implements OnChanges {
     } else {
       this.selectedDates.push(arg.dateStr);
     }
-    this.dateSelected.emit(arg.dateStr);
+    this.dateSelected.emit(arg.dateStr)
+    this.clickDate.emit(arg.date)
+    ;
     this.updateCalendarOptions();
   }
 

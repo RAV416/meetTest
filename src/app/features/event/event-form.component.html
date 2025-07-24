@@ -35,7 +35,7 @@
     <label class="form-label">Friends</label>
     <button
       type="button"
-      class="btn btn-outline-primary w-100 mb-2"
+      class="btn btn-light w-100 mb-2"
       (click)="showUserModal = true"
     >
       Select Friends
@@ -48,12 +48,12 @@
       [selectedUserIds]="model.participants"
       (selectedUserIdsChange)="model.participants = $event"
     />
-    } @if(model.participants.length === 0) { Please select at least one friend.
+    } @if(model.participants.length <= 1) { Please select at least one friend.
     }
     <button
       type="submit"
       class="btn btn-primary w-100"
-      [disabled]="form.invalid || participantsInvalid || dateInvalid"
+      [disabled]="form.invalid || participantsInvalid || dateInvalid || !currentUser"
     >
       Confirm
     </button>

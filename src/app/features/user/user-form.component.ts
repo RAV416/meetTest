@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { UserModel } from './user.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '../../service/auth.service';
 
 interface Credential {
   name: string;
@@ -26,7 +26,7 @@ export class UserFormComponent {
   private userService: UserService = inject(UserService);
   private authService: AuthService = inject(AuthService);
   route: ActivatedRoute = inject(ActivatedRoute);
-  
+
   mode: 'log in' | 'edit' | 'create' = 'log in';
   get credentials(): (keyof Credential)[] {
     if (this.mode === 'create' || this.mode === 'edit')
@@ -34,15 +34,14 @@ export class UserFormComponent {
     return ['email', 'password'];
   }
 
- model: Credential = {
-  name: '',
-  surname: '',
-  email: '',
-  password: '',
-  image: '',
-  id: ''
-};
-
+  model: Credential = {
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
+    image: '',
+    id: '',
+  };
 
   ngOnInit(): void {
     this.route.url.subscribe((urlSegments) => {
@@ -67,7 +66,6 @@ export class UserFormComponent {
     }
   }
 
-  
   getInputPattern(credential: string): string {
     switch (credential) {
       case 'email':
@@ -82,22 +80,28 @@ export class UserFormComponent {
     return ['email', 'password', 'name', 'surname'].includes(credential);
   }
 
-async onSubmit() {
-  const user: Credential = this.model;
+  async onSubmit() {
+    const user: Credential = this.model;
 
-  try {
-    if (this.mode === 'create') {
-      await this.authService.register(user.email, user.password!, user.name, user.surname);
-      console.log('User created and registered:', user.email);
-    } else if (this.mode === 'edit') {
-      await this.userService.updateOne(user.id!, user);
-      console.log('User updated:', user.id);
-    } else {
-      await this.authService.login(user.email, user.password!);
-      console.log('User logged in:', user.email);
+    try {
+      if (this.mode === 'create') {
+        await this.authService.register(
+          user.email,
+          user.password!,
+          user.name,
+          user.surname
+        );
+        
+        console.log('User created and registered:', user.email);
+      } else if (this.mode === 'edit') {
+        await this.userService.updateOne(user.id!, user);
+        console.log('User updated:', user.id);
+      } else {
+        await this.authService.login(user.email, user.password!);
+        console.log('User logged in:', user.email);
+      }
+    } catch (error) {
+      console.error('Error during form submit:', error);
     }
-  } catch (error) {
-    console.error('Error during form submit:', error);
   }
-}
 }

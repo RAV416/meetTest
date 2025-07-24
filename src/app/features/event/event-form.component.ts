@@ -8,6 +8,7 @@ import { UserService } from '../user/user.service';
 import { CalendarComponent } from '../../shared/calendar/calendar.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ToggleListComponent } from '../../shared/modal/toggle-list.component';
+import { UserModel } from '../user/user.model';
 
 @Component({
   selector: 'app-event-form',
@@ -23,7 +24,16 @@ export class EventFormComponent {
 
   users$ = this.userService.getAll();
   users = toSignal(this.users$, { initialValue: [] });
+  currentUser?: UserModel;
 
+  ngOnInit() {
+    this.userService.getCurrentUser().subscribe((user) => {
+      this.currentUser = user;
+      if (this.mode === 'create' && user?.id) {
+        this.model.participants.push(user.id);
+      }
+    });
+  }
   model: EventModel = {
     id: '',
     title: '',
@@ -32,6 +42,7 @@ export class EventFormComponent {
     location: '',
     participants: [],
     image: '',
+    createdBy: '',
   };
   mode: 'create' | 'edit' = 'create';
   showUserModal = false;
@@ -78,12 +89,24 @@ export class EventFormComponent {
     return this.model.date.length === 0;
   }
   get participantsInvalid(): boolean {
-    return this.model.participants.length === 0;
+    return this.model.participants.length <= 1;
   }
   onSubmit() {
     try {
+      if (!this.currentUser?.id) {
+        console.warn('No current user found.');
+        return;
+      }
+
+      if (!this.model.participants.includes(this.currentUser.id)) {
+        this.model.participants.push(this.currentUser.id);
+      }
       if (this.mode === 'create') {
-        const newEvent = { ...this.model, id: this.model.id };
+        const newEvent = {
+          ...this.model,
+          id: this.model.id,
+          createdBy: this.currentUser.id || '',
+        };
         this.eventService.addOne(newEvent);
         console.log('Event created:', newEvent.title);
         this.router.navigate(['/event']);
