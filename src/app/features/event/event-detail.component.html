@@ -1,58 +1,77 @@
 <div class="container mt-4">
   @if (event$ | async; as event) {
-  <div class="card h-100 p-3">
-    <div class="d-flex flex-column align-items-center">
+  <div class="card h-100 p-3 shadow-sm">
+    @if(event.image){
+    <div class="d-flex flex-column align-items-center mb-3">
       <img
         [src]="event.image"
-        class="img-fluid rounded-circle mb-3"
+        class="rounded-circle border"
         style="width: 100px; height: 100px; object-fit: cover"
         alt="No image available"
       />
     </div>
+    }
+
     <div class="card-body text-center">
       <h5 class="card-title text-primary">{{ event.title }}</h5>
       <p class="card-text text-muted">{{ event.description }}</p>
     </div>
 
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
         <strong>Date:</strong>
-        <ul class="mb-0 ps-3">
+        <button
+          class="btn btn-sm btn-outline-primary"
+          (click)="showCalendar = !showCalendar"
+        >
+          {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
+        </button>
+      </li>
+
+      <li class="list-group-item">
+        <ul class="mb-0 ps-3 list-unstyled">
+          @if (!showCalendar) { 
           @for (date of event.date; track date; let i = $index;) {
           <li
             voteProgress
             [votes]="yesClicks[i]"
             [total]="event.participants.length"
-            class="list-group-item"
+            class="border-top list-group-item d-flex flex-column gap-2"
           >
-            {{ date | date : "longDate" }}
-            <button class="btn btn-danger" 
-            [disabled]="!isYesClicked(i)"
-            (click)="noClick(i)">no</button>
-            <button
-              class="btn btn-success"
-              [disabled]="isYesClicked(i)"
-              (click)="yesClick(i)"
-            >
-              Yes ({{ yesClicks[i] }})
-            </button>
+            <div class="d-flex align-items-center">
+              <div>
+                <button
+                  class="btn btn-danger btn-sm me-2"
+                  [disabled]="!isYesClicked(i)"
+                  (click)="noClick(i)"
+                >
+                  No
+                </button>
+                <button
+                  class="btn btn-success btn-sm me-2"
+                  [disabled]="isYesClicked(i)"
+                  (click)="yesClick(i)"
+                >
+                  Yes ({{ yesClicks[i] || 0 }})
+                </button>
+              </div>
+              <span class="text-muted">{{ date | date : "longDate" }}</span>
+            </div>
           </li>
-          }
+          } }
         </ul>
-        <button
-          class="btn btn-primary mb-3"
-          (click)="showCalendar = !showCalendar"
-        >
-          {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}
-        </button>
 
         @if (showCalendar) {
-        <app-calendar></app-calendar>
+        <app-calendar [currentDates]="event.date"></app-calendar>
         }
       </li>
+
       <li class="list-group-item">
         <strong>Location:</strong> {{ event.location }}
       </li>
+
       <li class="list-group-item">
         @if (users$ | async; as users) {
         <strong>Participants:</strong>
@@ -61,7 +80,8 @@
       </li>
     </ul>
 
-    <div class="card-body text-center">
+    @if (currentUser?.id == event.createdBy) {
+    <div class="card-body text-center mt-3">
       <button class="btn btn-danger me-2" (click)="showDeleteModal = true">
         Remove Event
       </button>
@@ -73,18 +93,18 @@
         Edit Event
       </button>
     </div>
+    } @if (showDeleteModal) {
+    <app-delete-modal
+      [item]="event"
+      [id]="event.id"
+      (closeClick)="showDeleteModal = false"
+      (deleteClick)="deleteItem(event)"
+    >
+      Are you sure you want to remove this event? This action cannot be undone.
+    </app-delete-modal>
+    }
   </div>
-
-  @if (showDeleteModal) {
-  <app-delete-modal
-    [item]="event"
-    [id]="event.id"
-    (closeClick)="showDeleteModal = false"
-    (deleteClick)="deleteItem(event)"
-    >Are you sure you want to remove this event? This action cannot be
-    undone.</app-delete-modal
-  >
-  } }@else {
-  <p>Loading event details...</p>
+  } @else {
+  <p class="text-center text-muted">Loading event details...</p>
   }
 </div>

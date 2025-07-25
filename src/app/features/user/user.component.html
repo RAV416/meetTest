@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center">Friends List</h2>
-  <button class="btn btn-primary" routerLink="/user">Add Friends</button>
+  <button class="btn btn-primary" (click)="showUserModal=true">Add Friends</button>
 
     <ng-template #misc let-item>
       
@@ -11,4 +11,12 @@
       [miscTemplate]="misc"
     >
     </app-dynamic-list>
+    
 </div>
+    @if (showUserModal) {
+    <toggle-list
+      [users]="users()"
+      (openModal)="showUserModal = false"
+    
+    />
+    }

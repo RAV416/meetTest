@@ -41,7 +41,6 @@ export class EventService {
     }
     return Promise.reject('deleteOne: ID is required');
   }
-  
 
   voteYes(eventId: string, userId: string, dateIndex: number): Promise<void> {
     const eventRef = this._client.collection('meets').doc(eventId);

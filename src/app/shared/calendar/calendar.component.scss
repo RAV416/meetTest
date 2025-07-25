@@ -1,8 +1,25 @@
 ::ng-deep a {
   text-decoration: none;
 }
-::ng-deep .fc-daygrid-day.dateSelected {
-  background: #4caf50 !important; /* Green */
-  color: #972626 !important;
+
+::ng-deep .fc-daygrid-day.selected-date .fc-daygrid-day-number {
+  background: #4caf50 !important;
+  color: #fff !important;
   border-radius: 50%;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+}
+
+::ng-deep .fc-daygrid-day:hover .fc-daygrid-day-number {
+  background: #2196f3 !important;
+  color: white !important;
+  border-radius: 50%;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
 }

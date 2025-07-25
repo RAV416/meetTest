@@ -2,18 +2,8 @@
   <p class="text-center">
     This calendar is powered by
     <a href="https://fullcalendar.io/" target="_blank"
-      ><button>FullCalendar</button></a
-    >.
+      ><button>FullCalendar</button>
+    </a>.
   </p>
-    <full-calendar 
-    [options]="calendarOptions"
-    ></full-calendar>
-  <div>
-    <p>Selected date:</p>
-    <ul>
-      @for (selected of dateSelected |async; track i ;let i = $index) {
-      {{ selected  }}
-      }
-    </ul>
-  </div>
+  <full-calendar [options]="calendarOptions"></full-calendar>
 </div>

@@ -20,48 +20,7 @@ interface User {
 @Component({
   standalone: true,
   selector: 'toggle-list',
-  template: `
-    <div class="modal-backdrop fade show" style="z-index: 1040"></div>
-    <div class="modal d-block" tabindex="-1" style="z-index: 1050">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Select Friends</h5>
-            <button type="button" class="btn-close" (click)="close()"></button>
-          </div>
-          <div class="modal-body">
-            <input
-              type="text"
-              class="form-control mb-3"
-              placeholder="Search by email or name..."
-              [value]="searchTerm()"
-              (input)="onSearchInput($event)"
-            />
-            <ul class="list-unstyled">
-              @for (user of filteredUsers(); track user.id) {
-              <li>
-                <label class="form-check-label">
-                  <input
-                    type="checkbox"
-                    class="form-check-input me-2"
-                    [checked]="isSelected(user)"
-                    (change)="toggleUser(user)"
-                  />
-                  {{ user.email }} - {{ user.name + ' ' + user.surname }}
-                </label>
-              </li>
-              }
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="close()">
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
+  templateUrl: `toggle-list.component.html`,
 })
 export class ToggleListComponent {
   @Input() users: User[] = [];

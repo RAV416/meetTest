@@ -6,24 +6,23 @@ import {
   DynamicListComponent,
   DynamicListFields,
 } from '../../shared/dynamic-list/dynamic-list.component';
-import { AuthService } from './auth.service';
+import { ToggleListComponent } from '../../shared/modal/toggle-list.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styles: [],
-  imports: [RouterModule, DynamicListComponent],
+  imports: [RouterModule, DynamicListComponent, ToggleListComponent],
   standalone: true,
 })
 export class UserComponent {
-  mode: 'users' | 'friends' = 'users';
   private userService = inject(UserService);
-  private authService = inject(AuthService)
-  service = UserService;
-  readonly itemDeleted = output<string>();
-  readonly itemAdded   = output<string>();
-  readonly itemUpdated = output<{ id: string; changes: Partial<string> }>();
+  users$ = this.userService.getAll();
+  users = toSignal(this.users$, { initialValue: [] });
 
+  service = UserService;
+  mode: 'users' | 'friends' = 'users';
 
   mapToFields = (model: UserModel): DynamicListFields => ({
     title1: `Name: ${model.name} ${model.surname}`,
@@ -31,4 +30,6 @@ export class UserComponent {
     additionalInfo: ``,
     image: `${model.image}`,
   });
+
+  showUserModal = false;
 }

@@ -2,23 +2,34 @@
   <div class="flex-grow-1" style="background-color: rgb(99, 99, 99)">
     @if (user$ | async; as user) {
     <app-navbar></app-navbar>
-    <div class="bg-light text-end py-3 mt-auto border-top">
-      <h1 class="mb-0">
+    <div
+      class="bg-light blue py-1 px-2 border-top d-flex align-items-center justify-content-between"
+    >
+      <button class="btn btn-primary" (click)="showCalendar = !showCalendar">
+        {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}📅
+      </button>
+      @if (showCalendar) {
+      <div class="calendar-overlay" >
+        <app-calendar-overview></app-calendar-overview>
+      </div>
+      }
+      <h3 class="text-end">
         {{ user.email }}
         <button class="btn btn-secondary" (click)="logout()">Logout</button>
         <button class="btn btn-danger" (click)="showDeleteModal = true">
           Delete User
         </button>
-        @if (showDeleteModal) {
-        <app-delete-modal
-          (closeClick)="showDeleteModal = false"
-          (deleteClick)="deleteUser()"
-        > Are you sure you want to remove your account? This action cannot
-                be undone.
-      </app-delete-modal>
-        }
-      </h1>
+      </h3>
     </div>
+    @if (showDeleteModal) {
+    <app-delete-modal
+      (closeClick)="showDeleteModal = false"
+      (deleteClick)="deleteUser()"
+    >
+      Are you sure you want to remove your account? This action cannot be
+      undone.
+    </app-delete-modal>
+    }
     <router-outlet />
     } @else {
     <app-user-form></app-user-form>

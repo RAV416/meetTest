@@ -46,7 +46,7 @@ import { EventModel } from '../../features/event/event.model';
               class="btn btn-danger"
               (click)="confirmDelete()"
             >
-              Remove Event
+              Delete
             </button>
           </div>
         </div>
