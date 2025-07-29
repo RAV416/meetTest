@@ -1,11 +1,11 @@
 export interface EventModel {
   readonly id: string;
-  title: string;
-  description: string;
-  date: string[];
-  location: string;
+  readonly title: string;
+  readonly description: string;
+  readonly date: string[];
+  readonly location: string;
   participants: string[];
-  image?: string;
-  votes?: { [userId: string]: number[] };
-  createdBy: string
+  readonly image?: string;
+  readonly votes?: { [userId: string]: number[] };
+  readonly createdBy: string
 }
