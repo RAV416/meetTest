@@ -1,4 +1,4 @@
-import { Component, inject, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { EventService } from './event.service';
 import { EventModel } from './event.model';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';

@@ -70,12 +70,14 @@ export class EventFormComponent {
       }
     });
   }
-  formInputs(): (keyof EventModel)[] {
-    return ['title', 'description', 'location', 'image'];
-  }
-  isRequired(field: string): boolean {
-    return ['title', 'description', 'location'].includes(field);
-  }
+  
+formFields = [
+  { key: 'title', label: 'Title', required: true },
+  { key: 'description', label: 'Description', required: true },
+  { key: 'location', label: 'Location', required: true },
+  { key: 'image', label: 'Image URL', required: false },
+] as const;
+
   onDateSelected(date: string) {
     const dates = this.model.date;
     const index = dates.indexOf(date);

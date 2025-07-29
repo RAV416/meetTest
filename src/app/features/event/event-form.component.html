@@ -14,27 +14,27 @@
       ></app-calendar
     >
 
-    @for (input of formInputs(); track input) {
+    @for (input of formFields; track input) {
     <div class="mb-3">
       @if (ngModelRef.invalid && ngModelRef.touched) {
       <label class="form-label text-danger"
-        >{{ input | titlecase }} is required.</label
+        >{{ input.label | titlecase }} is required.</label
       >
       }@else{
       <label for="{{ input }}" class="form-label">
-        {{ input | titlecase }} </label
+        {{ input.label | titlecase }} </label
       >}
       <input
-        [id]="input"
+        [id]="input.key"
         class="form-control"
-        [name]="input"
-        [(ngModel)]="model[input]"
+        [name]="input.label"
+        [(ngModel)]="model[input.key]"
         #ngModelRef="ngModel"
-        [required]="isRequired(input)"
+        [required]="input.required"
         [attr.minlength]="3"
-        [attr.maxlength]="input === 'description' ? 500 : 50"
+        [attr.maxlength]="input.key === 'description' ? 500 : 50"
         [placeholder]="
-          input === 'image' ? 'Enter image URL' : 'Enter your ' + input
+          input.key === 'image' ? 'Enter image URL' : 'Enter your ' + input.key
         "
       />
     </div>
