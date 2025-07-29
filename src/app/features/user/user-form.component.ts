@@ -6,7 +6,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
 
-interface Credential {
+interface User {
   name: string;
   surname: string;
   email: string;
@@ -28,13 +28,13 @@ export class UserFormComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
 
   mode: 'log in' | 'edit' | 'create' = 'log in';
-  get credentials(): (keyof Credential)[] {
+  get credentials(): (keyof User)[] {
     if (this.mode === 'create' || this.mode === 'edit')
       return ['name', 'surname', 'email', 'password', 'image'];
     return ['email', 'password'];
   }
 
-  model: Credential = {
+  model: User = {
     name: '',
     surname: '',
     email: '',
@@ -81,7 +81,7 @@ export class UserFormComponent {
   }
 
   async onSubmit() {
-    const user: Credential = this.model;
+    const user: User = this.model;
 
     try {
       if (this.mode === 'create') {

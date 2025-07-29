@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timeGrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 
 @Component({
@@ -34,9 +33,9 @@ export class CalendarComponent implements OnChanges {
   selectedDates: string[] = [];
   calendarOptions: CalendarOptions = {
     firstDay: 1,
-    height: 'auto',
+    height: "auto",
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    plugins: [dayGridPlugin, interactionPlugin],
     dateClick: (click) => {this.handleDateClick(click)
     },
     dayCellClassNames: (arg) => {
@@ -46,9 +45,8 @@ export class CalendarComponent implements OnChanges {
     },
     selectable: true,
     headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek',
+      left: 'title',
+      right: 'prev,next',
     },
   };
   

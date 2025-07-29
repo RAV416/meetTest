@@ -6,13 +6,24 @@
       class="form-control mb-3"
       [currentDates]="model.date"
       (dateSelected)="onDateSelected($event)"
-    ></app-calendar>
-    @if(model.date.length === 0) { Please select at least one day. } 
+    >
+      <ng-content>
+        @if(model.date.length === 0) {
+        <h4>Please select at least one day.</h4>
+        }</ng-content
+      ></app-calendar
+    >
+
     @for (input of formInputs(); track input) {
     <div class="mb-3">
+      @if (ngModelRef.invalid && ngModelRef.touched) {
+      <label class="form-label text-danger"
+        >{{ input | titlecase }} is required.</label
+      >
+      }@else{
       <label for="{{ input }}" class="form-label">
-        {{ input | titlecase }}
-      </label>
+        {{ input | titlecase }} </label
+      >}
       <input
         [id]="input"
         class="form-control"
@@ -26,9 +37,6 @@
           input === 'image' ? 'Enter image URL' : 'Enter your ' + input
         "
       />
-      @if (ngModelRef.invalid && ngModelRef.touched) {
-      <div class="text-danger">{{ input | titlecase }} is required.</div>
-      }
     </div>
     }
 

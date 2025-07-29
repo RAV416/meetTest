@@ -69,6 +69,8 @@ export class EventDetailComponent {
   userClicked: { [userId: string]: Set<number> } = {};
   yesClicks: number[] = [];
   noClicks: number[] = [];
+  
+
   yesClick(index: number) {
     const userId = this.currentUser?.id;
     if (!userId || !this.event || this.userClicked[userId]?.has(index)) return;

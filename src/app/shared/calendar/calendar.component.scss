@@ -23,3 +23,8 @@
   line-height: 2em;
   text-align: center;
 }
+  ::ng-deep .fc .fc-daygrid-day-frame {
+    max-height: 40px;
+}
+
+
