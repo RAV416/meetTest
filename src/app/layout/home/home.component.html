@@ -1,7 +1,8 @@
 <div class="d-flex flex-column min-vh-100">
   <div class="flex-grow-1" style="background-color: rgb(169, 206, 255)">
-    @if (user$ | async; as user) {
     <app-navbar></app-navbar>
+    @if (user$ | async; as user) {
+    
     <div
       class="bg-light blue py-1 px-2 border-top d-flex align-items-center justify-content-between"
     >
