@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { UserModel } from './user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -34,4 +34,18 @@ addOne(user: UserModel): Promise<void> {
     if (!id) return of(undefined);
     return this.collection.doc(id).valueChanges({ idField: 'id' });
   }
+getFriends(): Observable<UserModel[]> {
+  const currentUserId = JSON.parse(localStorage.getItem('currentUser')!)?.id;
+  if (!currentUserId) return of([]);
+
+  return this.getOne(currentUserId).pipe(
+    switchMap(user => {
+      const friendIds = user?.friends || [];
+      return friendIds.length
+        ? combineLatest(friendIds.map(id => this.getOne(id)))
+        : of([]);
+    }),
+    map(users => users.filter((u): u is UserModel => !!u))
+  );
+}
 }

@@ -70,13 +70,13 @@ export class EventFormComponent {
       }
     });
   }
-  
-formFields = [
-  { key: 'title', label: 'Title', required: true },
-  { key: 'description', label: 'Description', required: true },
-  { key: 'location', label: 'Location', required: true },
-  { key: 'image', label: 'Image URL', required: false },
-] as const;
+
+  formFields = [
+    { key: 'title', label: 'Title', required: true },
+    { key: 'description', label: 'Description', required: true },
+    { key: 'location', label: 'Location', required: true },
+    { key: 'image', label: 'Image URL', required: false },
+  ] as const;
 
   onDateSelected(date: string) {
     const dates = this.model.date;
@@ -107,7 +107,7 @@ formFields = [
         const newEvent = {
           ...this.model,
           id: this.model.id,
-          createdBy: this.currentUser.id || '',
+          createdBy: this.currentUser.id,
         };
         this.eventService.addOne(newEvent);
         console.log('Event created:', newEvent.title);
@@ -117,6 +117,16 @@ formFields = [
         console.log('Event updated:', this.model.id);
         this.router.navigate([`/eventDetail/${this.model.id}`]);
       }
+      const currentFriends = new Set(this.currentUser?.friends ?? []);
+      for (const participantId of this.model.participants) {
+        if (participantId !== this.currentUser?.id) {
+          currentFriends.add(participantId);
+        }
+      }
+
+      this.userService.updateOne(this.currentUser.id, {
+        friends: Array.from(currentFriends),
+      });
     } catch (error) {
       console.error('Error during form submit:', error);
     }

@@ -27,19 +27,26 @@ export class ToggleListComponent {
   @Input() selectedUserIds: string[] = [];
   @Output() openModal = new EventEmitter<boolean>();
   @Output() selectedUserIdsChange = new EventEmitter<string[]>();
-
+@Input() friendIds: string[] = [];
   searchTerm = signal('');
   selectedIds: WritableSignal<string[]> = signal([]);
+showOnlyFriends = signal(false);
+filteredUsers = computed(() => {
+  const term = this.searchTerm().toLowerCase();
+  const showFriendsOnly = this.showOnlyFriends();
+  const users = showFriendsOnly
+    ? this.users.filter(user => this.friendIds.includes(user.id))
+    : this.users;
 
-  filteredUsers = computed(() => {
-    const term = this.searchTerm().toLowerCase();
-    return this.users.filter((user) =>
-      [user.email, user.name, user.surname]
-        .filter(Boolean)
-        .some((value) => value.toLowerCase().includes(term))
-    );
-  });
-
+  return users.filter(user =>
+    [user.email, user.name, user.surname]
+      .filter(Boolean)
+      .some(value => value.toLowerCase().includes(term))
+  );
+});
+toggleFriendFilter() {
+  this.showOnlyFriends.update(value => !value);
+}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedUserIds']) {
       this.selectedIds.set([...this.selectedUserIds]);

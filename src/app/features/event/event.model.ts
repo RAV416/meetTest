@@ -6,6 +6,6 @@ export interface EventModel {
   readonly location: string;
   participants: string[];
   readonly image?: string;
-  readonly votes?: { [userId: string]: number[] };
+  readonly votes?: { [userId: string]: string[] };
   readonly createdBy: string
 }

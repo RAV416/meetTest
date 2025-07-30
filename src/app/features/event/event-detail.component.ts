@@ -42,66 +42,78 @@ export class EventDetailComponent {
   currentUser$: Observable<UserModel | undefined> =
     this.userService.getCurrentUser();
 
-  ngOnInit() {
-    combineLatest([this.currentUser$, this.event$]).subscribe(
-      ([user, event]) => {
-        if (!user || !event) return;
+ngOnInit() {
+  combineLatest([this.currentUser$, this.event$]).subscribe(
+    ([user, event]) => {
+      if (!user || !event) return;
 
-        this.currentUser = user;
-        this.event = event;
+      this.currentUser = user;
+      this.event = event;
 
-        const votedIndexes = event.votes?.[user.id] ?? [];
-        this.userClicked[user.id] = new Set<number>(votedIndexes);
+      const votedDates = event.votes?.[user.id] ?? [];
+      this.userClicked[user.id] = new Set<string>(votedDates);
 
-        this.yesClicks = event.date.map((_, i) => {
-          let count = 0;
-          for (const userVotes of Object.values(event.votes ?? {})) {
-            if (userVotes.includes(i)) count++;
-          }
-          return count;
-        });
-      }
-    );
-  }
+      // Zlicz głosy TAK dla każdej daty
+      this.yesClicks = event.date.map((date) => {
+        let count = 0;
+        for (const userVotes of Object.values(event.votes ?? {})) {
+          if (userVotes.includes(date)) count++;
+        }
+        return count;
+      });
+    }
+  );
+}
 
   event?: EventModel;
   currentUser?: UserModel;
-  userClicked: { [userId: string]: Set<number> } = {};
+  userClicked: { [userId: string]: Set<string> } = {};
   yesClicks: number[] = [];
   noClicks: number[] = [];
-  
 
-  yesClick(index: number) {
-    const userId = this.currentUser?.id;
-    if (!userId || !this.event || this.userClicked[userId]?.has(index)) return;
+yesClick(index: number) {
+  const userId = this.currentUser?.id;
+  const date = this.event?.date[index];
+  if (!userId || !this.event || !date || this.userClicked[userId]?.has(date)) return;
 
-    this.eventService
-      .voteYes(this.event.id, userId, index)
-      .then(() => {
-        this.yesClicks[index]++;
-      })
-      .catch((err) => console.error('Vote error', err));
-  }
-  noClick(index: number) {
-    const userId = this.currentUser?.id;
-    if (!userId || !this.event || !this.userClicked[userId]?.has(index)) return;
+  this.eventService
+    .voteYes(this.event.id, userId, date)
+    .then(() => {
+      this.yesClicks[index]++;
+      this.userClicked[userId].add(date);
+    })
+    .catch((err) => console.error('Vote error', err));
+}
 
-    this.eventService
-      .voteNo(this.event.id, userId, index)
-      .then(() => {
-        this.noClicks[index]--;
-      })
-      .catch((err) => console.error('Vote error', err));
-  }
-  isYesClicked(index: number): boolean {
-    const userId = this.currentUser?.id;
-    if (!userId) return false;
-    return this.userClicked[userId]?.has(index) ?? false;
-  }
+noClick(index: number) {
+  const userId = this.currentUser?.id;
+  const date = this.event?.date[index];
+  if (!userId || !this.event || !date || !this.userClicked[userId]?.has(date)) return;
+
+  this.eventService
+    .voteNo(this.event.id, userId, date)
+    .then(() => {
+      this.noClicks[index]--;
+      this.userClicked[userId].delete(date);
+    })
+    .catch((err) => console.error('Vote error', err));
+}
+isYesClicked(index: number): boolean {
+  const userId = this.currentUser?.id;
+  const date = this.event?.date[index];
+  if (!userId || !date) return false;
+
+  return this.userClicked[userId]?.has(date) ?? false;
+}
 
   deleteItem(event: EventModel): void {
     console.log('Deleting event:', event.id);
     this.router.navigate(['/event']);
     this.eventService.deleteOne(event.id);
+  }
+  getSortedDates(event: EventModel): string[] {
+    return [...event.date].sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    );
   }
 }

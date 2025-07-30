@@ -42,18 +42,17 @@ export class EventService {
     return Promise.reject('deleteOne: ID is required');
   }
 
-  voteYes(eventId: string, userId: string, dateIndex: number): Promise<void> {
-    const eventRef = this._client.collection('meets').doc(eventId);
-    const votePath = `votes.${userId}`;
-    return eventRef.update({
-      [votePath]: arrayUnion(dateIndex) as unknown as FieldValue,
-    });
-  }
-  voteNo(eventId: string, userId: string, dateIndex: number): Promise<void> {
-    const eventRef = this._client.collection('meets').doc(eventId);
-    const votePath = `votes.${userId}`;
-    return eventRef.update({
-      [votePath]: arrayRemove(dateIndex),
-    });
-  }
+voteYes(eventId: string, userId: string, date: string): Promise<void> {
+  const votePath = `votes.${userId}`;
+  return this._client.collection('meets').doc(eventId).update({
+    [votePath]: arrayUnion(date),
+  });
+}
+
+voteNo(eventId: string, userId: string, date: string): Promise<void> {
+  const votePath = `votes.${userId}`;
+  return this._client.collection('meets').doc(eventId).update({
+    [votePath]: arrayRemove(date),
+  });
+}
 }

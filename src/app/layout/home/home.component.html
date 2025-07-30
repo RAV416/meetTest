@@ -1,5 +1,5 @@
 <div class="d-flex flex-column min-vh-100">
-  <div class="flex-grow-1" style="background-color: rgb(99, 99, 99)">
+  <div class="flex-grow-1" style="background-color: rgb(169, 206, 255)">
     @if (user$ | async; as user) {
     <app-navbar></app-navbar>
     <div
@@ -9,7 +9,7 @@
         {{ showCalendar ? "Hide Calendar" : "Show Calendar" }}📅
       </button>
       @if (showCalendar) {
-      <div class="calendar-overlay" >
+      <div class="calendar-overlay">
         <app-calendar-overview></app-calendar-overview>
       </div>
       }

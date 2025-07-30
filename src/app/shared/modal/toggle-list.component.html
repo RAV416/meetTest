@@ -14,6 +14,9 @@
           [value]="searchTerm()"
           (input)="onSearchInput($event)"
         />
+        <button type="button" (click)="toggleFriendFilter()">
+  {{ showOnlyFriends() ? 'Pokaż wszystkich' : 'Pokaż tylko znajomych' }}
+</button>
         <ul class="list-unstyled">
           @for (user of filteredUsers(); track user.id) {
           <li>
@@ -30,6 +33,8 @@
           }
         </ul>
       </div>
+      
+      <ng-content></ng-content>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="close()">
           Close

@@ -33,7 +33,7 @@
       <li class="list-group-item">
         <ul class="mb-0 ps-3 list-unstyled">
           @if (!showCalendar) { 
-          @for (date of event.date; track date; let i = $index;) {
+          @for (date of getSortedDates(event); track date; let i = $index;) {
           <li
             voteProgress
             [votes]="yesClicks[i]"

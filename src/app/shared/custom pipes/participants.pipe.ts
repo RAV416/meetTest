@@ -34,6 +34,6 @@ export class UserIdToCredentialPipe implements PipeTransform {
       }
     });
 
-    return result.join(', ');
+    return result.join();
   }
 }
